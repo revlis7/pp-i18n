@@ -32,18 +32,17 @@ class Messages extends CI_Controller
 
     $this->output->enable_profiler(true);
 
-    $this->benchmark->mark('fetch_gays_start');
-    $g_assoc_docs = array();
+    $this->benchmark->mark('format_messages_start');
+
     $g_docs = $this->tnc_mongo->db->GaysMessage_MigrationTest->find();
+    $p_docs = $this->tnc_mongo->db->PoppenMessage_MigrationTest->find();
+
+    $g_assoc_docs = array();
     foreach($g_docs as $g_doc) {
       $g_assoc_docs[$g_doc['string_name']] = $g_doc;
     }
-    $this->benchmark->mark('fetch_gays_end');
 
-
-    $this->benchmark->mark('get_messages_start');
     $messages = array();
-    $p_docs = $this->tnc_mongo->db->PoppenMessage_MigrationTest->find();
     foreach($p_docs as $p_doc) {
       $string_name = $p_doc['string_name'];
       $g_doc = isset($g_assoc_docs[$string_name]) ? $g_assoc_docs[$string_name] : null;
@@ -62,10 +61,7 @@ class Messages extends CI_Controller
         );
       }
     }
-    $this->benchmark->mark('get_messages_end');
-
-
-
+    $this->benchmark->mark('format_messages_end');
 
     $page_messages = array_slice($messages, ($this->pagination->cur_page - 1) * $config['per_page'], $config['per_page']);
     $data = array('page_links' => $page_links, 'page_messages' => $page_messages);
