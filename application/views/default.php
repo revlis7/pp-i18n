@@ -17,7 +17,7 @@
     -webkit-hyphens: auto;
     -moz-hyphens: auto;
     hyphens: auto;
-    overflow: overlay;
+    overflow: auto;
   }
   .show-grid [class^="col-"] {
     background-color: rgba(86, 61, 124, 0.15);
