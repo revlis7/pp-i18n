@@ -4,34 +4,17 @@ class Messages extends CI_Controller
 {
   public function index()
   {
-    $this->load->library('pagination');
-
-    $config['base_url'] = '/messages/page/';
-    $config['total_rows'] = $this->tnc_mongo->db->PoppenMessage_MigrationTest->count();
-    $config['per_page'] = 10;
-    $config['use_page_numbers'] = true;
-    $config['num_links'] = 4;
-    $config['full_tag_open']  = '<ul class="pagination">';
-    $config['full_tag_close'] = '</ul>';
-    $config['first_link'] = '&laquo;';
-    $config['first_tag_open']  = '<li>';
-    $config['first_tag_close'] = '</li>';
-    $config['next_link'] = false;
-    $config['prev_link'] = false;
-    $config['cur_tag_open']  = '<li class="active"><a href="#">';
-    $config['cur_tag_close'] = '</a></li>';
-    $config['num_tag_open']  = '<li>';
-    $config['num_tag_close'] = '</li>';
-    $config['last_link'] = '&raquo;';
-    $config['last_tag_open']  = '<li>';
-    $config['last_tag_close'] = '</li>';
-
-    $this->pagination->initialize($config);
-
-    $page_links = $this->pagination->create_links();
-
     $this->output->enable_profiler(true);
 
+    $this->config->load('pagination', true);
+    $page_config = $this->config->item('pagination');
+    $page_config['total_rows'] = $this->tnc_mongo->db->PoppenMessage_MigrationTest->count();
+
+    $this->load->library('pagination');
+    $this->pagination->initialize($page_config);
+    $page_links = $this->pagination->create_links();
+
+    // benchmark start
     $this->benchmark->mark('format_messages_start');
 
     $g_docs = $this->tnc_mongo->db->GaysMessage_MigrationTest->find();
@@ -61,9 +44,11 @@ class Messages extends CI_Controller
         );
       }
     }
+
+    // benchmark end
     $this->benchmark->mark('format_messages_end');
 
-    $page_messages = array_slice($messages, ($this->pagination->cur_page - 1) * $config['per_page'], $config['per_page']);
+    $page_messages = array_slice($messages, ($this->pagination->cur_page - 1) * $page_config['per_page'], $page_config['per_page']);
     $data = array('page_links' => $page_links, 'page_messages' => $page_messages);
     $this->template->load('default', 'messages/index', $data);
   }
