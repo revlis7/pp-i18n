@@ -1,4 +1,38 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-lg-2">
+      <label>Search in:</label>
+    </div>
+    <div class="col-lg-3">
+      <label>Keyword:</label>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-lg-2">
+      <select class="form-control">
+          <option value="0">STRING NAME</option>
+          <option value="1">POPPEN DE</option>
+          <option value="2">POPPEN EN</option>
+          <option value="3">POPPEN ES</option>
+          <option value="4">GAYS DE</option>
+          <option value="5">GAYS EN</option>
+          <option value="6">GAYS ES</option>
+      </select>
+    </div>
+    <div class="col-lg-3">
+      <div class="input-group">
+        <input type="text" class="form-control">
+        <div class="input-group-btn">
+          <button type="button" class="btn btn-default"><span class="glyphicon glyphicon-search"></span></button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="container-fluid">
 <?php echo $page_links; ?>
+</div>
 
 <div class="container-fluid">
   <?php foreach($page_messages as $string_name => $message): ?>
@@ -17,4 +51,6 @@
     <?php endforeach; ?>
 </div>
 
+<div class="container-fluid">
 <?php echo $page_links; ?>
+</div>

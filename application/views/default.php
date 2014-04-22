@@ -22,7 +22,7 @@
     overflow: auto;
   }
   .show-grid [class^="col-"] {
-    background-color: rgba(86, 61, 124, 0.15);
+    /* background-color: rgba(86, 61, 124, 0.15); */
     border: 1px solid rgba(86, 61, 124, 0.2);
     padding-bottom: 10px;
     padding-top: 10px;
@@ -33,6 +33,19 @@
   </style>
 </head>
 <body>
+  <header id="top" class="navbar navbar-inverse navbar-static-top bs-docs-nav" role="banner">
+    <div class="container-fluid">
+      <div class="navbar-header">
+        <a class="navbar-brand" href="#">Translate Tool</a>
+      </div>
+      <nav role="navigation" class="collapse navbar-collapse bs-navbar-collapse">
+        <ul class="nav navbar-nav navbar-right">
+          <li><a href="#">Search</a></li>
+          <li><a href="#">Settings</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
 <?php echo $contents; ?>
 </body>
 </html>
