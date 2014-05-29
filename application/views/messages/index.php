@@ -11,13 +11,13 @@
     <form role="form">
       <div class="col-lg-2">
         <select class="form-control">
-            <option value="0">STRING NAME</option>
-            <option value="1">POPPEN DE</option>
-            <option value="2">POPPEN EN</option>
-            <option value="3">POPPEN ES</option>
-            <option value="4">GAYS DE</option>
-            <option value="5">GAYS EN</option>
-            <option value="6">GAYS ES</option>
+            <option value="0">String Name</option>
+            <option value="1">Poppen DE</option>
+            <option value="2">Poppen EN</option>
+            <option value="3">Poppen ES</option>
+            <option value="4">Gays DE</option>
+            <option value="5">Gays EN</option>
+            <option value="6">Gays ES</option>
         </select>
       </div>
       <div class="col-lg-3">

@@ -6,16 +6,10 @@ class Messages extends CI_Controller
   {
     $this->output->enable_profiler(true);
 
-    $this->config->load('pagination', true);
-    $page_config = $this->config->item('pagination');
-    $page_config['total_rows'] = $this->tnc_mongo->db->PoppenMessage_MigrationTest->count();
-
-    $this->load->library('pagination');
-    $this->pagination->initialize($page_config);
-    $page_links = $this->pagination->create_links();
-
     // benchmark start
     $this->benchmark->mark('format_messages_start');
+
+    // get all messages from poppen & gays, and merge them together
 
     $g_docs = $this->tnc_mongo->db->GaysMessage_MigrationTest->find();
     $p_docs = $this->tnc_mongo->db->PoppenMessage_MigrationTest->find();
@@ -47,6 +41,15 @@ class Messages extends CI_Controller
 
     // benchmark end
     $this->benchmark->mark('format_messages_end');
+
+    // pagination
+    $this->config->load('pagination', true);
+    $page_config = $this->config->item('pagination');
+    $page_config['total_rows'] = count($messages);
+
+    $this->load->library('pagination');
+    $this->pagination->initialize($page_config);
+    $page_links = $this->pagination->create_links();
 
     $page_messages = array_slice($messages, ($this->pagination->cur_page - 1) * $page_config['per_page'], $page_config['per_page']);
     $data = array('page_links' => $page_links, 'page_messages' => $page_messages);
