@@ -26,7 +26,7 @@
           <div class="input-group-btn">
             <button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-search"></span></button>
           </div>
-        </div>x
+        </div>
       </div>
     </form>
   </div>
@@ -34,24 +34,6 @@
 
 <div class="container-fluid">
 <?php echo $page_links; ?>
-</div>
-
-<div class="container-fluid">
-  <?php foreach($page_messages as $string_name => $message): ?>
-  <div class="list-group">
-    <div class="list-group-item">
-      <h4 class="list-group-item-heading"><?php echo $string_name; ?></h4>
-      <h6>POPPEN_DE</h6>
-      <textarea class="form-control" rows="3" readonly><?php echo isset($message['p']['trans_de']) ? $message['p']['trans_de'] : ''; ?></textarea>
-      <h6>POPPEN_EN</h6>
-      <p class="list-group-item-text"><?php echo isset($message['p']['trans_en']) ? $message['p']['trans_en'] : ''; ?></p>
-      <p class="list-group-item-text"><?php echo isset($message['p']['trans_es']) ? $message['p']['trans_es'] : ''; ?></p>
-      <p class="list-group-item-text"><?php echo isset($message['g']['trans_de']) ? $message['g']['trans_de'] : ''; ?></p>
-      <p class="list-group-item-text"><?php echo isset($message['g']['trans_en']) ? $message['g']['trans_en'] : ''; ?></p>
-      <p class="list-group-item-text"><?php echo isset($message['g']['trans_es']) ? $message['g']['trans_es'] : ''; ?></p>
-    </div>
-  </div>
-  <?php endforeach; ?>
 </div>
 
 <div class="container-fluid">
@@ -68,7 +50,7 @@
         <div class="col-md-2 break"><?php echo isset($message['g']['trans_en']) ? $message['g']['trans_en'] : ''; ?></div>
         <div class="col-md-2 break"><?php echo isset($message['g']['trans_es']) ? $message['g']['trans_es'] : ''; ?></div>
     </div>
-  <?php endforeach; ?>
+    <?php endforeach; ?>
 </div>
 
 <div class="container-fluid">
