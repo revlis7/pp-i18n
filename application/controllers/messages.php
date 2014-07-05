@@ -10,9 +10,20 @@ class Messages extends CI_Controller
     $this->benchmark->mark('format_messages_start');
 
     // get all messages from poppen & gays, and merge them together
+    $gays_collection   = $this->config->item('gays_collection');
+    $poppen_collection = $this->config->item('poppen_collection');
 
-    $g_docs = $this->tnc_mongo->db->GaysMessage_MigrationTest->find();
-    $p_docs = $this->tnc_mongo->db->PoppenMessage_MigrationTest->find();
+    $param = $this->input->get();
+
+    if(!empty($param)) {
+      $search_in = $param['search_in'];
+      $keyword   = !empty($param['keyword']) ? preg_replace('/\*/', '.*', $param['keyword']) : '';
+      $g_docs = $this->tnc_mongo->db->$gays_collection->find(array('string_name' => $param['keyword']));
+      $p_docs = $this->tnc_mongo->db->$poppen_collection->find(array('string_name' => $param['keyword']));
+    } else {
+      $g_docs = $this->tnc_mongo->db->$gays_collection->find();
+      $p_docs = $this->tnc_mongo->db->$poppen_collection->find();
+    }
 
     $g_assoc_docs = array();
     foreach($g_docs as $g_doc) {

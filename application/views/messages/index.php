@@ -10,7 +10,7 @@
   <div class="row">
     <form role="form">
       <div class="col-lg-2">
-        <select class="form-control">
+        <select class="form-control" name="search_in">
             <option value="0">String Name</option>
             <option value="1">Poppen DE</option>
             <option value="2">Poppen EN</option>
@@ -22,7 +22,7 @@
       </div>
       <div class="col-lg-3">
         <div class="input-group">
-          <input type="text" class="form-control">
+          <input type="text" name="keyword" class="form-control">
           <div class="input-group-btn">
             <button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-search"></span></button>
           </div>
