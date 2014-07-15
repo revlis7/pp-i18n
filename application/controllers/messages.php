@@ -4,6 +4,10 @@ class Messages extends CI_Controller
 {
   public function index()
   {
+    $this->load->helper(array('form'));
+    //$this->config->load('app', true);
+    var_dump($this->app->get_communities());
+    exit;
     $this->output->enable_profiler(true);
 
     // benchmark start
@@ -63,7 +67,11 @@ class Messages extends CI_Controller
     $page_links = $this->pagination->create_links();
 
     $page_messages = array_slice($messages, ($this->pagination->cur_page - 1) * $page_config['per_page'], $page_config['per_page']);
-    $data = array('page_links' => $page_links, 'page_messages' => $page_messages);
+    $data = array(
+      'search_in'     => $param['search_in'] ? $param['search_in'] : 0,
+      'keyword'       => $param['keyword'] ? $param['keyword'] : '',
+      'page_links'    => $page_links,
+      'page_messages' => $page_messages);
     $this->template->load('default', 'messages/index', $data);
   }
 }
