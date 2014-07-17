@@ -5,9 +5,7 @@ class Messages extends CI_Controller
   public function index()
   {
     $this->load->helper(array('form'));
-    //$this->config->load('app', true);
-    var_dump($this->app->get_communities());
-    exit;
+
     $this->output->enable_profiler(true);
 
     // benchmark start
@@ -19,14 +17,22 @@ class Messages extends CI_Controller
 
     $param = $this->input->get();
 
-    if(!empty($param)) {
-      $search_in = $param['search_in'];
-      $keyword   = !empty($param['keyword']) ? preg_replace('/\*/', '.*', $param['keyword']) : '';
-      $g_docs = $this->tnc_mongo->db->$gays_collection->find(array('string_name' => $param['keyword']));
-      $p_docs = $this->tnc_mongo->db->$poppen_collection->find(array('string_name' => $param['keyword']));
-    } else {
-      $g_docs = $this->tnc_mongo->db->$gays_collection->find();
-      $p_docs = $this->tnc_mongo->db->$poppen_collection->find();
+    $search_in = !empty($param['search_in']) ? $param['search_in'] : 'STRING_NAME';
+    $keyword   = !empty($param['keyword'])   ? preg_replace('/\*/', '.*', $param['keyword']) : '.*';
+    switch($search_in) {
+      case 'STRING_NAME':
+        $regex  = array('$regex' => new MongoRegex("/^".$keyword."$/"));
+        $g_docs = $this->tnc_mongo->db->$gays_collection->find(array('string_name' => $regex));
+        $g_docs->sort(array('updated_at' => 1));
+        $p_docs = $this->tnc_mongo->db->$poppen_collection->find(array('string_name' => $regex));
+        $p_docs->sort(array('updated_at' => 1));
+        break;
+      default:
+        $g_docs = $this->tnc_mongo->db->$gays_collection->find();
+        $g_docs->sort(array('updated_at' => 1));
+        $p_docs = $this->tnc_mongo->db->$poppen_collection->find();
+        $p_docs->sort(array('updated_at' => 1));
+        break;
     }
 
     $g_assoc_docs = array();
