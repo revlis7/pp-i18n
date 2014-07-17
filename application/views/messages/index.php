@@ -10,7 +10,7 @@
   <div class="row">
     <form role="form">
       <div class="col-lg-2">
-        <?= form_dropdown('search_in', $this->app->get_search_range_list(), 1, 'class="form-control"'); ?>
+        <?= form_dropdown('search', $this->app->get_search_range_list(), $search, 'class="form-control"'); ?>
       </div>
       <div class="col-lg-3">
         <div class="input-group">

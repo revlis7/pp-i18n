@@ -6,7 +6,7 @@ class Messages extends CI_Controller
   {
     $this->load->helper(array('form'));
 
-    $this->output->enable_profiler(true);
+    // $this->output->enable_profiler(true);
 
     // benchmark start
     $this->benchmark->mark('format_messages_start');
@@ -17,9 +17,9 @@ class Messages extends CI_Controller
 
     $param = $this->input->get();
 
-    $search_in = !empty($param['search_in']) ? $param['search_in'] : 'STRING_NAME';
-    $keyword   = !empty($param['keyword'])   ? preg_replace('/\*/', '.*', $param['keyword']) : '.*';
-    switch($search_in) {
+    $search  = !empty($param['search'])  ? $param['search'] : 'STRING_NAME';
+    $keyword = !empty($param['keyword']) ? preg_replace('/\*/', '.*', $param['keyword']) : '.*';
+    switch($search) {
       case 'STRING_NAME':
         $regex  = array('$regex' => new MongoRegex("/^".$keyword."$/"));
         $g_docs = $this->tnc_mongo->db->$gays_collection->find(array('string_name' => $regex));
@@ -71,11 +71,10 @@ class Messages extends CI_Controller
     $this->load->library('pagination');
     $this->pagination->initialize($page_config);
     $page_links = $this->pagination->create_links();
-
     $page_messages = array_slice($messages, ($this->pagination->cur_page - 1) * $page_config['per_page'], $page_config['per_page']);
     $data = array(
-      'search_in'     => $param['search_in'] ? $param['search_in'] : 0,
-      'keyword'       => $param['keyword'] ? $param['keyword'] : '',
+      'search'        => !empty($param['search'])  ? $param['search'] : 0,
+      'keyword'       => !empty($param['keyword']) ? $param['keyword'] : '',
       'page_links'    => $page_links,
       'page_messages' => $page_messages);
     $this->template->load('default', 'messages/index', $data);
