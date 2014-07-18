@@ -8,6 +8,53 @@ class Messages extends CI_Controller
 
     // $this->output->enable_profiler(true);
 
+    $messages = $this->searchInMongo();
+
+    // pagination
+    $this->config->load('pagination', true);
+    $page_config = $this->config->item('pagination');
+    $page_config['total_rows'] = count($messages);
+
+    $this->load->library('pagination');
+    $this->pagination->initialize($page_config);
+    $page_links = $this->pagination->create_links();
+    $page_messages = array_slice($messages, ($this->pagination->cur_page - 1) * $page_config['per_page'], $page_config['per_page']);
+    $data = array(
+      'search'        => $this->input->get('search'),
+      'keyword'       => $this->input->get('keyword'),
+      'page_links'    => $page_links,
+      'page_messages' => $page_messages);
+    $this->template->load('default', 'messages/index', $data);
+  }
+
+  public function search()
+  {
+    $this->load->helper(array('form'));
+
+    // $this->output->enable_profiler(true);
+
+    $messages = $this->searchInMongo($this->input->get('search'), $this->input->get('keyword'));
+
+    // pagination
+    $this->config->load('pagination', true);
+    $page_config = $this->config->item('pagination');
+    $page_config['total_rows'] = count($messages);
+
+    $this->load->library('pagination');
+    $this->pagination->initialize($page_config);
+    $page_links = $this->pagination->create_links();
+    $page_messages = array_slice($messages, ($this->pagination->cur_page - 1) * $page_config['per_page'], $page_config['per_page']);
+
+    $data = array(
+      'search'        => $this->input->get('search'),
+      'keyword'       => $this->input->get('keyword'),
+      'page_links'    => $page_links,
+      'page_messages' => $page_messages);
+    $this->template->load('default', 'messages/index', $data);
+  }
+
+  private function searchInMongo($search = 'string_name', $keyword = '')
+  {
     // benchmark start
     $this->benchmark->mark('format_messages_start');
 
@@ -15,12 +62,10 @@ class Messages extends CI_Controller
     $gays_collection   = $this->config->item('gays_collection');
     $poppen_collection = $this->config->item('poppen_collection');
 
-    $param = $this->input->get();
-
-    $search  = !empty($param['search'])  ? $param['search'] : 'STRING_NAME';
-    $keyword = !empty($param['keyword']) ? preg_replace('/\*/', '.*', $param['keyword']) : '.*';
+    $search  = !empty($search)  ? $search : 'string_name';
+    $keyword = !empty($keyword) ? preg_replace('/\*/', '.*', $keyword) : '.*';
     switch($search) {
-      case 'STRING_NAME':
+      case 'string_name':
         $regex  = array('$regex' => new MongoRegex("/^".$keyword."$/"));
         $g_docs = $this->tnc_mongo->db->$gays_collection->find(array('string_name' => $regex));
         $g_docs->sort(array('updated_at' => 1));
@@ -63,20 +108,6 @@ class Messages extends CI_Controller
     // benchmark end
     $this->benchmark->mark('format_messages_end');
 
-    // pagination
-    $this->config->load('pagination', true);
-    $page_config = $this->config->item('pagination');
-    $page_config['total_rows'] = count($messages);
-
-    $this->load->library('pagination');
-    $this->pagination->initialize($page_config);
-    $page_links = $this->pagination->create_links();
-    $page_messages = array_slice($messages, ($this->pagination->cur_page - 1) * $page_config['per_page'], $page_config['per_page']);
-    $data = array(
-      'search'        => !empty($param['search'])  ? $param['search'] : 0,
-      'keyword'       => !empty($param['keyword']) ? $param['keyword'] : '',
-      'page_links'    => $page_links,
-      'page_messages' => $page_messages);
-    $this->template->load('default', 'messages/index', $data);
+    return $messages;
   }
 }

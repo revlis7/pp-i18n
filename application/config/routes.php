@@ -39,9 +39,9 @@
 */
 
 $route['messages/page']      = "messages/index";
-$route['messages/page/:any'] = "messages/index";
 $route['messages/page/:num'] = "messages/index";
-$route['default_controller'] = "messages";
+$route['search']             = "messages/search";
+$route['default_controller'] = "messages/index";
 $route['404_override'] = '';
 
 

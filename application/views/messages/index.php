@@ -8,7 +8,7 @@
     </div>
   </div>
   <div class="row">
-    <form role="form">
+    <form role="form" action="/search">
       <div class="col-lg-2">
         <?= form_dropdown('search', $this->app->get_search_range_list(), $search, 'class="form-control"'); ?>
       </div>

@@ -1,17 +1,17 @@
 <?php
 
 $config['community'] = array(
-  'POPPEN' => 'Poppen',
-  'GAYS'   => 'Gays',
+  'poppen' => 'Poppen',
+  'gays'   => 'Gays',
 );
 
 $config['community_language'] = array(
-  'POPPEN' => array('DE', 'EN', 'ES'),
-  'GAYS'   => array('DE', 'EN', 'ES'),
+  'poppen' => array('de', 'en', 'es'),
+  'gays'   => array('de', 'en', 'es'),
 );
 
 $config['language'] = array(
-  'DE' => 'Deutsch',
-  'EN' => 'English',
-  'ES' => 'Española',
+  'de' => 'Deutsch',
+  'en' => 'English',
+  'es' => 'Española',
 );

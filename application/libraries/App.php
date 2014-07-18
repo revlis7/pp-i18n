@@ -30,7 +30,7 @@ class App
   function get_search_range_list()
   {
     $list = array(
-      'STRING_NAME' => 'String Name',
+      'string_name' => 'String Name',
     );
 
     $communities = $this->get_communities();
