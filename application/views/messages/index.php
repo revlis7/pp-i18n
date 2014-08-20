@@ -8,7 +8,7 @@
     </div>
   </div>
   <div class="row">
-    <form role="form" action="/search">
+    <form role="form">
       <div class="col-lg-2">
         <?= form_dropdown('search', $this->app->get_search_range_list(), $search, 'class="form-control"'); ?>
       </div>
@@ -16,7 +16,7 @@
         <div class="input-group">
           <input type="text" name="keyword" class="form-control" value="<?= $keyword; ?>">
           <div class="input-group-btn">
-            <button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-search"></span></button>
+            <button name="search" type="button" class="btn btn-default"><span class="glyphicon glyphicon-search"></span></button>
           </div>
         </div>
       </div>
@@ -58,3 +58,23 @@
 <div class="container-fluid">
 <?php echo $page_links; ?>
 </div>
+
+<script>
+$(document).ready(function() {
+  var redirectSearchPage = function() {
+    var search  = $('select[name="search"] option:selected').val();
+    var keyword = $('input[name="keyword"]').val();
+    var uri = '/search/' + search + '/keyword/' + keyword;
+    window.location = uri;
+  };
+
+  $('button[name="search"]').click(redirectSearchPage);
+
+  $('input[name="keyword"]').keypress(function(e) {
+    if (e.which == 13) {
+      e.preventDefault();
+      redirectSearchPage();
+    }
+  });
+});
+</script>

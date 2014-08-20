@@ -27,17 +27,18 @@ class Messages extends CI_Controller
     $this->template->load('default', 'messages/index', $data);
   }
 
-  public function search()
+  public function search($search = 'string_name', $keyword = '*', $page = 1)
   {
     $this->load->helper(array('form'));
 
     // $this->output->enable_profiler(true);
 
-    $messages = $this->searchInMongo($this->input->get('search'), $this->input->get('keyword'));
+    $messages = $this->searchInMongo($search, $keyword);
 
     // pagination
     $this->config->load('pagination', true);
     $page_config = $this->config->item('pagination');
+    $page_config['base_url']   = '/search/'.$search.'/keyword/'.$keyword.'/page';
     $page_config['total_rows'] = count($messages);
 
     $this->load->library('pagination');
@@ -46,8 +47,8 @@ class Messages extends CI_Controller
     $page_messages = array_slice($messages, ($this->pagination->cur_page - 1) * $page_config['per_page'], $page_config['per_page']);
 
     $data = array(
-      'search'        => $this->input->get('search'),
-      'keyword'       => $this->input->get('keyword'),
+      'search'        => $search,
+      'keyword'       => $keyword,
       'page_links'    => $page_links,
       'page_messages' => $page_messages);
     $this->template->load('default', 'messages/index', $data);
