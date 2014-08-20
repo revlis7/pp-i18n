@@ -38,8 +38,9 @@ class Messages extends CI_Controller
     // pagination
     $this->config->load('pagination', true);
     $page_config = $this->config->item('pagination');
-    $page_config['base_url']   = '/search/'.$search.'/keyword/'.$keyword.'/page';
-    $page_config['total_rows'] = count($messages);
+    $page_config['base_url']    = '/search/'.$search.'/keyword/'.$keyword.'/page/';
+    $page_config['uri_segment'] = 6;
+    $page_config['total_rows']  = count($messages);
 
     $this->load->library('pagination');
     $this->pagination->initialize($page_config);
