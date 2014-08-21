@@ -36,12 +36,11 @@
   <header id="top" class="navbar navbar-inverse navbar-static-top bs-docs-nav" role="banner">
     <div class="container-fluid">
       <div class="navbar-header">
-        <a class="navbar-brand" href="#">Translate Tool</a>
+        <a class="navbar-brand" href="/ ">Translate Tool</a>
       </div>
       <nav role="navigation" class="collapse navbar-collapse bs-navbar-collapse">
         <ul class="nav navbar-nav navbar-right">
-          <li><a href="#">Search</a></li>
-          <li><a href="#">Settings</a></li>
+          <li><a href="javascript:void();">Settings</a></li>
         </ul>
       </nav>
     </div>
