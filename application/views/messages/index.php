@@ -33,31 +33,19 @@
   <div class="list-group">
     <div class="list-group-item">
       <h4 class="list-group-item-heading"><?php echo $string_name; ?></h4>
-      <h4><span class="label label-danger">Poppen Deutsch</span></h4>
-      <textarea name="poppen-de-<?php echo $string_name; ?>" class="form-control" rows="3" readonly><?php echo isset($message['p']['trans_de']) ? $message['p']['trans_de'] : ''; ?></textarea>
-      <p class="action-box">
-        <button name="save" type="button" class="btn btn-primary btn-sm" comm="poppen" lang="de" stn="<?php echo $string_name; ?>" >Save</button>
-        <button type="button" class="btn btn-default btn-sm">Cancel</button>
-      </p>
-      <hr />
-      <h4><span class="label label-danger">Poppen English</span></h4>
-      <textarea name="poppen-en-<?php echo $string_name; ?>" class="form-control" rows="3" readonly><?php echo isset($message['p']['trans_en']) ? $message['p']['trans_en'] : ''; ?></textarea>
-      <p class="action-box">
-        <button name="save" type="button" class="btn btn-primary btn-sm" comm="poppen" lang="en" stn="<?php echo $string_name; ?>" >Save</button>
-        <button type="button" class="btn btn-default btn-sm">Cancel</button>
-      </p>
-      <hr />
-      <h4><span class="label label-danger">Poppen Española</span></h4>
-      <textarea class="form-control" rows="3" readonly><?php echo isset($message['p']['trans_es']) ? $message['p']['trans_es'] : ''; ?></textarea>
-      <hr />
-      <h4><span class="label label-primary">Gays Deutsch</span></h4>
-      <textarea class="form-control" rows="3" readonly><?php echo isset($message['g']['trans_de']) ? $message['g']['trans_de'] : ''; ?></textarea>
-      <hr />
-      <h4><span class="label label-primary">Gays English</span></h4>
-      <textarea class="form-control" rows="3" readonly><?php echo isset($message['g']['trans_en']) ? $message['g']['trans_en'] : ''; ?></textarea>
-      <hr />
-      <h4><span class="label label-primary">Gays Española</span></h4>
-      <textarea class="form-control" rows="3" readonly><?php echo isset($message['g']['trans_es']) ? $message['g']['trans_es'] : ''; ?></textarea>
+      <?php foreach ($communities as $community => $community_name): ?>
+        <?php $label = $community == 'poppen' ? 'label-danger' : 'label-primary'; ?>
+        <?php $languages = $this->app->get_languages_by_community($community); ?>
+        <?php foreach ($languages as $language): ?>
+          <h4><span class="label <?php echo $label; ?>"><?php echo $community_name; ?> <?php echo $this->app->get_language_name($language); ?></span></h4>
+          <textarea name="<?php echo $community; ?>-<?php echo $language; ?>-<?php echo $string_name; ?>" class="form-control" rows="3" readonly><?php echo isset($message[$community][$this->app->get_language_field($language)]) ? $message[$community][$this->app->get_language_field($language)] : ''; ?></textarea>
+          <p class="action-box">
+            <button name="save" type="button" class="btn btn-primary btn-sm" comm="<?php echo $community; ?>" lang="<?php echo $language; ?>" stn="<?php echo $string_name; ?>" >Save</button>
+            <button type="button" class="btn btn-default btn-sm">Cancel</button>
+          </p>
+          <hr />
+        <?php endforeach; ?>
+      <?php endforeach; ?>
     </div>
   </div>
   <?php endforeach; ?>
@@ -86,11 +74,7 @@ $(document).ready(function() {
   });
 
   $('button[name="save"]').click(function() {
-    // console.log($(this).attr('comm'));
-    // console.log($(this).attr('lang'));
-    // console.log($(this).attr('stn'));
     var area_name = $(this).attr('comm') + '-' + $(this).attr('lang') + '-' + $(this).attr('stn');
-    // console.log($('textarea[name="' + area_name + '"]').val());
     var message = $('textarea[name="' + area_name + '"]').val();
 
     $.ajax({

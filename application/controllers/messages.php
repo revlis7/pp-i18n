@@ -20,6 +20,7 @@ class Messages extends CI_Controller
     $page_links = $this->pagination->create_links();
     $page_messages = array_slice($messages, ($this->pagination->cur_page - 1) * $page_config['per_page'], $page_config['per_page']);
     $data = array(
+      'communities'   => $this->app->get_communities(),
       'search'        => $this->input->get('search'),
       'keyword'       => $this->input->get('keyword'),
       'page_links'    => $page_links,
@@ -48,6 +49,7 @@ class Messages extends CI_Controller
     $page_messages = array_slice($messages, ($this->pagination->cur_page - 1) * $page_config['per_page'], $page_config['per_page']);
 
     $data = array(
+      'communities'   => $this->app->get_communities(),
       'search'        => $search,
       'keyword'       => $keyword,
       'page_links'    => $page_links,
@@ -107,8 +109,8 @@ class Messages extends CI_Controller
       $string_name = $p_doc['string_name'];
       $g_doc = isset($g_assoc_docs[$string_name]) ? $g_assoc_docs[$string_name] : null;
       $messages[$string_name] = array(
-        'p' => $p_doc,
-        'g' => $g_doc,
+        'poppen' => $p_doc,
+        'gays'   => $g_doc,
       );
     }
 
@@ -116,8 +118,8 @@ class Messages extends CI_Controller
       $string_name = $g_doc['string_name'];
       if(!isset($messages[$string_name])) {
         $messages[$string_name] = array(
-          'p' => null,
-          'g' => $g_doc,
+          'poppen' => null,
+          'gays'   => $g_doc,
         );
       }
     }
