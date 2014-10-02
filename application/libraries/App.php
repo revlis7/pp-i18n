@@ -49,4 +49,9 @@ class App
   {
     return element($language, $this->get('language'));
   }
+
+  function get_language_field($language)
+  {
+    return 'trans_'.strtolower($language);
+  }
 }

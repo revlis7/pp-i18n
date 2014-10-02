@@ -58,15 +58,7 @@ class Messages extends CI_Controller
   public function save()
   {
     $this->getParams();
-
-    $new_message = array('$set' => array(
-      "trans_de"   => $this->message,
-      "updated_at" => time(),
-    ));
-
-    $poppen_collection = $this->config->item('poppen_collection');
-    $this->tnc_mongo->db->$poppen_collection->update(array('string_name' => $this->stn), $new_message);
-
+    $this->i18n_mongo_handler->update($this->comm, $this->stn, $this->lang, $this->message);
     echo json_encode(array('r' => 'ok'));
   }
 
