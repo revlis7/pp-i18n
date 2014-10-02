@@ -30,6 +30,9 @@
   .messages div {
     height: 150px;
   }
+  .action-box {
+    margin-top: 10px;
+  }
   </style>
 </head>
 <body>

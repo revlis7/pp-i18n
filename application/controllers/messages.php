@@ -55,6 +55,29 @@ class Messages extends CI_Controller
     $this->template->load('default', 'messages/index', $data);
   }
 
+  public function save()
+  {
+    $this->getParams();
+
+    $new_message = array('$set' => array(
+      "trans_de"   => $this->message,
+      "updated_at" => time(),
+    ));
+
+    $poppen_collection = $this->config->item('poppen_collection');
+    $this->tnc_mongo->db->$poppen_collection->update(array('string_name' => $this->stn), $new_message);
+
+    echo json_encode(array('r' => 'ok'));
+  }
+
+  private function getParams()
+  {
+    $this->comm = $this->input->post('comm');
+    $this->lang = $this->input->post('lang');
+    $this->stn  = $this->input->post('stn');
+    $this->message = $this->input->post('message');
+  }
+
   private function searchInMongo($search = 'string_name', $keyword = '')
   {
     // benchmark start

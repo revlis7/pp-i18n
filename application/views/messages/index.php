@@ -34,10 +34,18 @@
     <div class="list-group-item">
       <h4 class="list-group-item-heading"><?php echo $string_name; ?></h4>
       <h4><span class="label label-danger">Poppen Deutsch</span></h4>
-      <textarea class="form-control" rows="3" readonly><?php echo isset($message['p']['trans_de']) ? $message['p']['trans_de'] : ''; ?></textarea>
+      <textarea name="poppen-de-<?php echo $string_name; ?>" class="form-control" rows="3" readonly><?php echo isset($message['p']['trans_de']) ? $message['p']['trans_de'] : ''; ?></textarea>
+      <p class="action-box">
+        <button name="save" type="button" class="btn btn-primary btn-sm" comm="poppen" lang="de" stn="<?php echo $string_name; ?>" >Save</button>
+        <button type="button" class="btn btn-default btn-sm">Cancel</button>
+      </p>
       <hr />
       <h4><span class="label label-danger">Poppen English</span></h4>
-      <textarea class="form-control" rows="3" readonly><?php echo isset($message['p']['trans_en']) ? $message['p']['trans_en'] : ''; ?></textarea>
+      <textarea name="poppen-en-<?php echo $string_name; ?>" class="form-control" rows="3" readonly><?php echo isset($message['p']['trans_en']) ? $message['p']['trans_en'] : ''; ?></textarea>
+      <p class="action-box">
+        <button name="save" type="button" class="btn btn-primary btn-sm" comm="poppen" lang="en" stn="<?php echo $string_name; ?>" >Save</button>
+        <button type="button" class="btn btn-default btn-sm">Cancel</button>
+      </p>
       <hr />
       <h4><span class="label label-danger">Poppen Española</span></h4>
       <textarea class="form-control" rows="3" readonly><?php echo isset($message['p']['trans_es']) ? $message['p']['trans_es'] : ''; ?></textarea>
@@ -75,6 +83,28 @@ $(document).ready(function() {
       e.preventDefault();
       redirectSearchPage();
     }
+  });
+
+  $('button[name="save"]').click(function() {
+    // console.log($(this).attr('comm'));
+    // console.log($(this).attr('lang'));
+    // console.log($(this).attr('stn'));
+    var area_name = $(this).attr('comm') + '-' + $(this).attr('lang') + '-' + $(this).attr('stn');
+    // console.log($('textarea[name="' + area_name + '"]').val());
+    var message = $('textarea[name="' + area_name + '"]').val();
+
+    $.ajax({
+      type: "POST",
+      url: "/messages/save",
+      data: {
+        'comm': $(this).attr('comm'),
+        'lang': $(this).attr('lang'),
+        'stn':  $(this).attr('stn'),
+        'message': message
+      },
+      success: function(data) {console.log(data.r)},
+      dataType: "json"
+    });
   });
 });
 </script>
