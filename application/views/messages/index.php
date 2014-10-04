@@ -39,10 +39,10 @@
         <?php foreach ($languages as $language): ?>
           <h4><span class="label <?php echo $label; ?>"><?php echo $community_name; ?> <?php echo $this->app->get_language_name($language); ?></span></h4>
           <textarea name="<?php echo $community; ?>-<?php echo $language; ?>-<?php echo $string_name; ?>" class="form-control" rows="3" readonly><?php echo isset($message[$community][$this->app->get_language_field($language)]) ? $message[$community][$this->app->get_language_field($language)] : ''; ?></textarea>
-          <p class="action-box">
+          <div class="action-box" id="<?php echo $community; ?>-<?php echo $language; ?>-<?php echo $string_name; ?>-action-box" style="display:none;">
             <button name="save" type="button" class="btn btn-primary btn-sm" comm="<?php echo $community; ?>" lang="<?php echo $language; ?>" stn="<?php echo $string_name; ?>" >Save</button>
             <button type="button" class="btn btn-default btn-sm">Cancel</button>
-          </p>
+          </div>
           <hr />
         <?php endforeach; ?>
       <?php endforeach; ?>
@@ -89,6 +89,19 @@ $(document).ready(function() {
       success: function(data) {console.log(data.r)},
       dataType: "json"
     });
+  });
+
+  $('textarea').focus(function() {
+    // console.log($(this).attr('name'));
+    var action_box = $(this).attr('name') + '-action-box';
+    $(document.getElementById(action_box)).show();
+    $(this).removeAttr('readonly');
+  });
+
+  $('textarea').blur(function() {
+    var action_box = $(this).attr('name') + '-action-box';
+    $(document.getElementById(action_box)).hide();
+    $(this).attr('readonly', true);
   });
 });
 </script>
