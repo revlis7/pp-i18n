@@ -2,6 +2,11 @@
 
 class Messages extends CI_Controller
 {
+  public function template()
+  {
+    $this->template->load('default', 'messages/mockup');
+  }
+
   public function index()
   {
     $this->load->helper(array('form'));
@@ -85,7 +90,7 @@ class Messages extends CI_Controller
     $keyword = !empty($keyword) ? preg_replace('/\*/', '.*', $keyword) : '.*';
 
     // if ($search != 'string_name') {
-      
+
     // }
 
 

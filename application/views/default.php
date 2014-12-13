@@ -33,6 +33,21 @@
   .action-box {
     margin-top: 10px;
   }
+  .options-box {
+    float: left;
+    padding-bottom: 15px;
+    width: 16.66666667%;
+    margin-right: 15px;
+  }
+  .message-body {
+    border: 2px dashed #c0c0c0;
+    border-radius: 5px;
+    padding-top: 15px;
+    padding-bottom: 15px;
+    margin-bottom: 15px;
+    padding-left: 15px;
+    padding-right: 15px;
+  }
   </style>
 </head>
 <body>
