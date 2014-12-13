@@ -83,12 +83,25 @@ class Messages extends CI_Controller
 
     $search  = !empty($search)  ? $search : 'string_name';
     $keyword = !empty($keyword) ? preg_replace('/\*/', '.*', $keyword) : '.*';
+
+    // if ($search != 'string_name') {
+      
+    // }
+
+
     switch($search) {
       case 'string_name':
         $regex  = array('$regex' => new MongoRegex("/^".$keyword."$/"));
         $g_docs = $this->tnc_mongo->db->$gays_collection->find(array('string_name' => $regex));
         $g_docs->sort(array('updated_at' => 1));
         $p_docs = $this->tnc_mongo->db->$poppen_collection->find(array('string_name' => $regex));
+        $p_docs->sort(array('updated_at' => 1));
+        break;
+      case 'poppen_en':
+        $regex  = array('$regex' => new MongoRegex("/^".$keyword."$/"));
+        $g_docs = $this->tnc_mongo->db->$gays_collection->find(array('trans_en' => $regex));
+        $g_docs->sort(array('updated_at' => 1));
+        $p_docs = $this->tnc_mongo->db->$poppen_collection->find(array('trans_en' => $regex));
         $p_docs->sort(array('updated_at' => 1));
         break;
       default:
