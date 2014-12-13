@@ -1,18 +1,12 @@
 <div class="container-fluid">
   <div class="row">
-    <div class="col-lg-2">
-      <label>Search in:</label>
-    </div>
-    <div class="col-lg-3">
-      <label>Keyword:</label>
-    </div>
-  </div>
-  <div class="row">
     <form role="form">
       <div class="col-lg-2">
+        <label>Search in:</label>
         <?= form_dropdown('search', $this->app->get_search_range_list(), $search, 'class="form-control"'); ?>
       </div>
       <div class="col-lg-3">
+        <label>Keyword:</label>
         <div class="input-group">
           <input type="text" name="keyword" class="form-control" value="<?= $keyword; ?>">
           <div class="input-group-btn">
