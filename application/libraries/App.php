@@ -22,11 +22,6 @@ class App
     return $this->get('community');
   }
 
-  function get_languages_by_community($community)
-  {
-    return element($community, $this->get('community_language'));
-  }
-
   function get_search_range_list()
   {
     $list = array(

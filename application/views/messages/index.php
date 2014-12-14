@@ -3,7 +3,7 @@
     <form role="form">
       <div class="col-lg-2">
         <label>Search in:</label>
-        <?= form_dropdown('search', $this->app->get_search_range_list(), $search, 'class="form-control"'); ?>
+        <?= form_dropdown('search', array('string_name' => 'String Name', 'translation' => 'Translation'), $search, 'class="form-control"'); ?>
       </div>
       <div class="col-lg-3">
         <label>Keyword:</label>
@@ -23,23 +23,70 @@
 </div>
 
 <div class="container-fluid">
+  <div class="row">
+    <div class="col-lg-6">
+      <div class="options-box">
+        <select name="community" class="form-control">
+          <option value="poppen" selected="selected">Poppen</option>
+          <option value="gays">Gays</option>
+        </select>
+      </div>
+      <div class="options-box">
+        <select name="community" class="form-control">
+          <option value="en" selected="selected">English</option>
+          <option value="de">Deutsch</option>
+          <option value="es">Española</option>
+        </select>
+      </div>
+      <div class="options-box">
+        <button type="button" class="btn btn-primary">Go</button>
+      </div>
+    </div>
+    <div class="col-lg-6">
+      <div class="options-box">
+        <select name="community" class="form-control">
+          <option value="poppen">Poppen</option>
+          <option value="gays" selected="selected">Gays</option>
+        </select>
+      </div>
+      <div class="options-box">
+        <select name="community" class="form-control">
+          <option value="en" selected="selected">English</option>
+          <option value="de">Deutsch</option>
+          <option value="es">Española</option>
+        </select>
+      </div>
+      <div class="options-box">
+        <button type="button" class="btn btn-primary">Go</button>
+      </div>
+    </div>
+  </div>
+
   <?php foreach($page_messages as $string_name => $message): ?>
-  <div class="list-group">
-    <div class="list-group-item">
-      <h4 class="list-group-item-heading"><?php echo $string_name; ?></h4>
-      <?php foreach ($communities as $community => $community_name): ?>
-        <?php $label = $community == 'poppen' ? 'label-danger' : 'label-primary'; ?>
-        <?php $languages = $this->app->get_languages_by_community($community); ?>
-        <?php foreach ($languages as $language): ?>
-          <h4><span class="label <?php echo $label; ?>"><?php echo $community_name; ?> <?php echo $this->app->get_language_name($language); ?></span></h4>
-          <textarea name="<?php echo $community; ?>-<?php echo $language; ?>-<?php echo $string_name; ?>" class="form-control" rows="3" readonly><?php echo isset($message[$community][$this->app->get_language_field($language)]) ? $message[$community][$this->app->get_language_field($language)] : ''; ?></textarea>
-          <div class="action-box" id="<?php echo $community; ?>-<?php echo $language; ?>-<?php echo $string_name; ?>-action-box" style="display:none;">
-            <button name="save" type="button" class="btn btn-primary btn-sm" comm="<?php echo $community; ?>" lang="<?php echo $language; ?>" stn="<?php echo $string_name; ?>" >Save</button>
-            <button type="button" class="btn btn-default btn-sm">Cancel</button>
-          </div>
-          <hr />
+  <div class="row">
+    <div class="col-lg-6">
+      <div class="message-body">
+        <h4><?= $string_name; ?></h4>
+        <?php $hide = false; ?>
+        <?php foreach($languages as $language => $language_name): ?>
+          <p lang="<?= $language; ?>" <?= $hide ? 'style="display:none;"': ''; ?>>
+            <?= htmlspecialchars($message['poppen'][$this->app->get_language_field($language)]); ?>
+          </p>
+          <?php $hide = true; ?>
         <?php endforeach; ?>
-      <?php endforeach; ?>
+      </div>
+    </div>
+    <div class="col-lg-6">
+      <div class="message-body">
+        <h4><?= $string_name; ?></h4>
+        <?php $hide = false; ?>
+        <?php foreach($languages as $language => $language_name): ?>
+          <p lang="<?= $language; ?>" <?= $hide ? 'style="display:none;"': ''; ?>>
+            <?= htmlspecialchars($message['poppen'][$this->app->get_language_field($language)]); ?>
+          </p>
+          <?php $hide = true; ?>
+        <?php endforeach; ?>
+      </div>
     </div>
   </div>
   <?php endforeach; ?>
@@ -65,37 +112,6 @@ $(document).ready(function() {
       e.preventDefault();
       redirectSearchPage();
     }
-  });
-
-  $('button[name="save"]').click(function() {
-    var area_name = $(this).attr('comm') + '-' + $(this).attr('lang') + '-' + $(this).attr('stn');
-    var message = $('textarea[name="' + area_name + '"]').val();
-
-    $.ajax({
-      type: "POST",
-      url: "/messages/save",
-      data: {
-        'comm': $(this).attr('comm'),
-        'lang': $(this).attr('lang'),
-        'stn':  $(this).attr('stn'),
-        'message': message
-      },
-      success: function(data) {console.log(data.r)},
-      dataType: "json"
-    });
-  });
-
-  $('textarea').focus(function() {
-    // console.log($(this).attr('name'));
-    var action_box = $(this).attr('name') + '-action-box';
-    $(document.getElementById(action_box)).show();
-    $(this).removeAttr('readonly');
-  });
-
-  $('textarea').blur(function() {
-    var action_box = $(this).attr('name') + '-action-box';
-    $(document.getElementById(action_box)).hide();
-    $(this).attr('readonly', true);
   });
 });
 </script>

@@ -26,6 +26,7 @@ class Messages extends CI_Controller
     $page_messages = array_slice($messages, ($this->pagination->cur_page - 1) * $page_config['per_page'], $page_config['per_page']);
     $data = array(
       'communities'   => $this->app->get_communities(),
+      'languages'     => $this->app->get('language'),
       'search'        => $this->input->get('search'),
       'keyword'       => $this->input->get('keyword'),
       'page_links'    => $page_links,
@@ -55,6 +56,7 @@ class Messages extends CI_Controller
 
     $data = array(
       'communities'   => $this->app->get_communities(),
+      'languages'     => $this->app->get('language'),
       'search'        => $search,
       'keyword'       => $keyword,
       'page_links'    => $page_links,
