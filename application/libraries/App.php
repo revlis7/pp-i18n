@@ -49,4 +49,18 @@ class App
   {
     return 'trans_'.strtolower($language);
   }
+
+  function get_current_community($side = 'left')
+  {
+    $side = $side == 'left' ? $side : 'right';
+    $key = 'default_community_'.$side;
+    return $this->get($key);
+  }
+
+  function get_current_language($side = 'right')
+  {
+    $side = $side == 'left' ? $side : 'right';
+    $key = 'default_language_'.$side;
+    return $this->get($key);
+  }
 }

@@ -26,38 +26,38 @@
   <div class="row">
     <div class="col-lg-6">
       <div class="options-box">
-        <select name="community" class="form-control">
+        <select name="community-sel-left" class="form-control">
           <option value="poppen" selected="selected">Poppen</option>
           <option value="gays">Gays</option>
         </select>
       </div>
       <div class="options-box">
-        <select name="community" class="form-control">
+        <select name="language-sel-left" class="form-control">
           <option value="en" selected="selected">English</option>
           <option value="de">Deutsch</option>
           <option value="es">Española</option>
         </select>
       </div>
       <div class="options-box">
-        <button type="button" class="btn btn-primary">Go</button>
+        <button name="switch-btn-left" type="button" class="btn btn-primary">Go</button>
       </div>
     </div>
     <div class="col-lg-6">
       <div class="options-box">
-        <select name="community" class="form-control">
+        <select name="community-sel-right" class="form-control">
           <option value="poppen">Poppen</option>
           <option value="gays" selected="selected">Gays</option>
         </select>
       </div>
       <div class="options-box">
-        <select name="community" class="form-control">
+        <select name="language-sel-right" class="form-control">
           <option value="en" selected="selected">English</option>
           <option value="de">Deutsch</option>
           <option value="es">Española</option>
         </select>
       </div>
       <div class="options-box">
-        <button type="button" class="btn btn-primary">Go</button>
+        <button name="switch-btn-right" type="button" class="btn btn-primary">Go</button>
       </div>
     </div>
   </div>
@@ -65,26 +65,30 @@
   <?php foreach($page_messages as $string_name => $message): ?>
   <div class="row">
     <div class="col-lg-6">
-      <div class="message-body">
+      <div class="message-body" side="left">
         <h4><?= $string_name; ?></h4>
         <?php $hide = false; ?>
-        <?php foreach($languages as $language => $language_name): ?>
-          <p lang="<?= $language; ?>" <?= $hide ? 'style="display:none;"': ''; ?>>
-            <?= htmlspecialchars($message['poppen'][$this->app->get_language_field($language)]); ?>
-          </p>
-          <?php $hide = true; ?>
+        <?php foreach($communities as $community => $community_name): ?>
+          <?php foreach($languages as $language => $language_name): ?>
+            <p data="<?= $community.'_'.$language; ?>" <?= $hide ? 'style="display:none;"': ''; ?>>
+              <?= htmlspecialchars($message['poppen'][$this->app->get_language_field($language)]); ?>
+            </p>
+            <?php $hide = true; ?>
+          <?php endforeach; ?>
         <?php endforeach; ?>
       </div>
     </div>
     <div class="col-lg-6">
-      <div class="message-body">
+      <div class="message-body" side="right">
         <h4><?= $string_name; ?></h4>
         <?php $hide = false; ?>
-        <?php foreach($languages as $language => $language_name): ?>
-          <p lang="<?= $language; ?>" <?= $hide ? 'style="display:none;"': ''; ?>>
-            <?= htmlspecialchars($message['poppen'][$this->app->get_language_field($language)]); ?>
-          </p>
-          <?php $hide = true; ?>
+        <?php foreach($communities as $community => $community_name): ?>
+          <?php foreach($languages as $language => $language_name): ?>
+            <p data="<?= $community.'_'.$language; ?>" <?= $hide ? 'style="display:none;"': ''; ?>>
+              <?= htmlspecialchars($message['poppen'][$this->app->get_language_field($language)]); ?>
+            </p>
+            <?php $hide = true; ?>
+          <?php endforeach; ?>
         <?php endforeach; ?>
       </div>
     </div>
@@ -105,7 +109,24 @@ $(document).ready(function() {
     window.location = uri;
   };
 
+  var switchDisplay = function(side) {
+    side == 'left' ? side : 'right';
+    var community = $('select[name="community-sel-' + side + '"] option:selected').val();
+    var language  = $('select[name="language-sel-' + side + '"] option:selected').val();
+    console.log(community, language);
+    $('.message-body[side="' + side + '"] > p').hide();
+    $('.message-body[side="' + side + '"] > p[data="' + community + '_' + language + '"]').show();
+  }
+
   $('button[name="search"]').click(redirectSearchPage);
+
+  $('button[name="switch-btn-left"]').click(function() {
+    switchDisplay('left');
+  });
+
+  $('button[name="switch-btn-right"]').click(function() {
+    switchDisplay('right');
+  });
 
   $('input[name="keyword"]').keypress(function(e) {
     if (e.which == 13) {

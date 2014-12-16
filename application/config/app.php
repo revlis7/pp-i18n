@@ -1,5 +1,12 @@
 <?php
 
+$config['default_community_left']  = 'poppen';
+$config['default_community_right'] = 'gays';
+
+$config['default_language_left']  = 'de';
+$config['default_language_right'] = 'de';
+
+
 $config['community'] = array(
   'poppen' => 'Poppen',
   'gays'   => 'Gays',
