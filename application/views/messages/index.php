@@ -35,9 +35,9 @@
       </div>
       <div class="options-box">
         <select name="language-sel-left" class="form-control">
-          <option value="en" selected="selected">English</option>
-          <option value="de">Deutsch</option>
-          <option value="es">Española</option>
+        <?php foreach($languages as $language => $language_name): ?>
+          <option value="<?= $language; ?>" <?= $language == $this->app->get('default_language_left') ? 'selected="selected"' : ''; ?>><?= $language_name; ?></option>
+        <?php endforeach; ?>
         </select>
       </div>
       <div class="options-box">
@@ -54,9 +54,9 @@
       </div>
       <div class="options-box">
         <select name="language-sel-right" class="form-control">
-          <option value="en" selected="selected">English</option>
-          <option value="de">Deutsch</option>
-          <option value="es">Española</option>
+        <?php foreach($languages as $language => $language_name): ?>
+          <option value="<?= $language; ?>" <?= $language == $this->app->get('default_language_right') ? 'selected="selected"' : ''; ?>><?= $language_name; ?></option>
+        <?php endforeach; ?>
         </select>
       </div>
       <div class="options-box">
