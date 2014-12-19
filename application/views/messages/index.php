@@ -24,11 +24,13 @@
 
 <div class="container-fluid">
   <div class="row">
+    <form role="form" autocomplete="off">
     <div class="col-lg-6">
       <div class="options-box">
         <select name="community-sel-left" class="form-control">
-          <option value="poppen" selected="selected">Poppen</option>
-          <option value="gays">Gays</option>
+        <?php foreach($communities as $community => $community_name): ?>
+          <option value="<?= $community; ?>" <?= $community == $this->app->get('default_community_left') ? 'selected="selected"' : ''; ?>><?= $community_name; ?></option>
+        <?php endforeach; ?>
         </select>
       </div>
       <div class="options-box">
@@ -45,8 +47,9 @@
     <div class="col-lg-6">
       <div class="options-box">
         <select name="community-sel-right" class="form-control">
-          <option value="poppen">Poppen</option>
-          <option value="gays" selected="selected">Gays</option>
+        <?php foreach($communities as $community => $community_name): ?>
+          <option value="<?= $community; ?>" <?= $community == $this->app->get('default_community_right') ? 'selected="selected"' : ''; ?>><?= $community_name; ?></option>
+        <?php endforeach; ?>
         </select>
       </div>
       <div class="options-box">
@@ -60,6 +63,7 @@
         <button name="switch-btn-right" type="button" class="btn btn-primary">Go</button>
       </div>
     </div>
+    </form>
   </div>
 
   <?php foreach($page_messages as $string_name => $message): ?>
