@@ -29,14 +29,14 @@
       <div class="options-box">
         <select name="community-sel-left" class="form-control">
         <?php foreach($communities as $community => $community_name): ?>
-          <option value="<?= $community; ?>" <?= $community == $this->app->get('default_community_left') ? 'selected="selected"' : ''; ?>><?= $community_name; ?></option>
+          <option value="<?= $community; ?>" <?= $community == $current_community_left ? 'selected="selected"' : ''; ?>><?= $community_name; ?></option>
         <?php endforeach; ?>
         </select>
       </div>
       <div class="options-box">
         <select name="language-sel-left" class="form-control">
         <?php foreach($languages as $language => $language_name): ?>
-          <option value="<?= $language; ?>" <?= $language == $this->app->get('default_language_left') ? 'selected="selected"' : ''; ?>><?= $language_name; ?></option>
+          <option value="<?= $language; ?>" <?= $language == $current_language_left ? 'selected="selected"' : ''; ?>><?= $language_name; ?></option>
         <?php endforeach; ?>
         </select>
       </div>
@@ -48,14 +48,14 @@
       <div class="options-box">
         <select name="community-sel-right" class="form-control">
         <?php foreach($communities as $community => $community_name): ?>
-          <option value="<?= $community; ?>" <?= $community == $this->app->get('default_community_right') ? 'selected="selected"' : ''; ?>><?= $community_name; ?></option>
+          <option value="<?= $community; ?>" <?= $community == $current_community_right ? 'selected="selected"' : ''; ?>><?= $community_name; ?></option>
         <?php endforeach; ?>
         </select>
       </div>
       <div class="options-box">
         <select name="language-sel-right" class="form-control">
         <?php foreach($languages as $language => $language_name): ?>
-          <option value="<?= $language; ?>" <?= $language == $this->app->get('default_language_right') ? 'selected="selected"' : ''; ?>><?= $language_name; ?></option>
+          <option value="<?= $language; ?>" <?= $language == $current_language_right ? 'selected="selected"' : ''; ?>><?= $language_name; ?></option>
         <?php endforeach; ?>
         </select>
       </div>
@@ -71,13 +71,15 @@
     <div class="col-lg-6">
       <div class="message-body" side="left">
         <h4><?= $string_name; ?></h4>
-        <?php $hide = false; ?>
         <?php foreach($communities as $community => $community_name): ?>
           <?php foreach($languages as $language => $language_name): ?>
-            <p data="<?= $community.'_'.$language; ?>" <?= $hide ? 'style="display:none;"': ''; ?>>
+            <?php
+              $data = $community.'_'.$language;
+              $hide = $data == $current_community_left.'_'.$current_language_left ? false : true;
+            ?>
+            <p data="<?= $data; ?>" <?= $hide ? 'style="display:none;"': ''; ?>>
               <?= htmlspecialchars($message['poppen'][$this->app->get_language_field($language)]); ?>
             </p>
-            <?php $hide = true; ?>
           <?php endforeach; ?>
         <?php endforeach; ?>
       </div>
@@ -85,13 +87,15 @@
     <div class="col-lg-6">
       <div class="message-body" side="right">
         <h4><?= $string_name; ?></h4>
-        <?php $hide = false; ?>
         <?php foreach($communities as $community => $community_name): ?>
           <?php foreach($languages as $language => $language_name): ?>
-            <p data="<?= $community.'_'.$language; ?>" <?= $hide ? 'style="display:none;"': ''; ?>>
+            <?php
+              $data = $community.'_'.$language;
+              $hide = $data == $current_community_right.'_'.$current_language_right ? false : true;
+            ?>
+            <p data="<?= $data; ?>" <?= $hide ? 'style="display:none;"': ''; ?>>
               <?= htmlspecialchars($message['poppen'][$this->app->get_language_field($language)]); ?>
             </p>
-            <?php $hide = true; ?>
           <?php endforeach; ?>
         <?php endforeach; ?>
       </div>
