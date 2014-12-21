@@ -76,24 +76,23 @@
             <?php
               $data = $community.'_'.$language;
               $hide = $data == $current_community_left.'_'.$current_language_left ? false : true;
+              $raw_text = '';
+              if (isset($message['poppen'][$this->app->get_language_field($language)])) {
+                $raw_text = $message['poppen'][$this->app->get_language_field($language)];
+              }
             ?>
             <p data="<?= $data; ?>" <?= $hide ? 'style="display:none;"': ''; ?>>
-              <?php
-                $raw_text = '';
-                if (isset($message['poppen'][$this->app->get_language_field($language)])) {
-                  $raw_text = $message['poppen'][$this->app->get_language_field($language)];
-                }
-              ?>
-              <?php if (empty($raw_text)): ?>
-                <span class="light-grey">
-                <?= $language == 'en' ? 'STRING IS EMPTY' : ''; ?>
-                <?= $language == 'de' ? 'STRING LEER' : ''; ?>
-                <?= $language == 'es' ? 'CADENA ESTÁ VACÍA' : ''; ?>
-                </span>
-              <?php else: ?>
-                <?= htmlspecialchars($raw_text); ?>
-              <?php endif; ?>
+            <?php if (empty($raw_text)): ?>
+              <span class="light-grey">
+              <?= $language == 'en' ? 'STRING IS EMPTY' : ''; ?>
+              <?= $language == 'de' ? 'STRING LEER' : ''; ?>
+              <?= $language == 'es' ? 'CADENA ESTÁ VACÍA' : ''; ?>
+              </span>
+            <?php else: ?>
+              <?= htmlspecialchars($raw_text); ?>
+            <?php endif; ?>
             </p>
+            <textarea class="form-control message-edit" style="display: none;"><?= $raw_text; ?></textarea>
           <?php endforeach; ?>
         <?php endforeach; ?>
         <hr class="hr-set" />

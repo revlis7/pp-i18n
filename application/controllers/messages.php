@@ -61,6 +61,10 @@ class Messages extends CI_Controller
     $data = array(
       'communities'   => $this->app->get_communities(),
       'languages'     => $this->app->get('language'),
+      'current_community_left'  => $this->app->get('default_community_left'),
+      'current_community_right' => $this->app->get('default_community_right'),
+      'current_language_left'   => $this->app->get('default_language_left'),
+      'current_language_right'  => $this->app->get('default_language_right'),
       'search'        => $search,
       'keyword'       => $keyword,
       'page_links'    => $page_links,

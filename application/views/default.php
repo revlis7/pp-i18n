@@ -60,6 +60,9 @@
   .message-create {
     float: right;
   }
+  .message-edit {
+    margin: 0 0 10px;
+  }
   </style>
 </head>
 <body>
