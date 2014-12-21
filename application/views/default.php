@@ -42,11 +42,20 @@
   .message-body {
     border: 2px dashed #c0c0c0;
     border-radius: 5px;
-    padding-top: 15px;
-    padding-bottom: 15px;
     margin-bottom: 15px;
-    padding-left: 15px;
-    padding-right: 15px;
+    padding: 10px;
+  }
+  .light-grey {
+    color: #cccccc;
+  }
+  .hr-set {
+    margin-top: 0px;
+    margin-bottom: 10px;
+  }
+  .message-action {
+    float: right;
+    font-size: 0.7em;
+    margin-left: 15px;
   }
   </style>
 </head>

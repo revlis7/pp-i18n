@@ -78,10 +78,31 @@
               $hide = $data == $current_community_left.'_'.$current_language_left ? false : true;
             ?>
             <p data="<?= $data; ?>" <?= $hide ? 'style="display:none;"': ''; ?>>
-              <?= htmlspecialchars($message['poppen'][$this->app->get_language_field($language)]); ?>
+              <?php
+                $raw_text = '';
+                if (isset($message['poppen'][$this->app->get_language_field($language)])) {
+                  $raw_text = $message['poppen'][$this->app->get_language_field($language)];
+                }
+              ?>
+              <?php if (empty($raw_text)): ?>
+                <span class="light-grey">
+                <?= $language == 'en' ? 'STRING IS EMPTY' : ''; ?>
+                <?= $language == 'de' ? 'ZEICHENKETTE IST LEER' : ''; ?>
+                <?= $language == 'es' ? 'LA CADENA ES VACÍA' : ''; ?>
+                </span>
+              <?php else: ?>
+                <?= htmlspecialchars($raw_text); ?>
+              <?php endif; ?>
             </p>
           <?php endforeach; ?>
         <?php endforeach; ?>
+        <hr class="hr-set" />
+        <div>
+          <span class="message-action">Delete</span>
+          <span class="message-action">Edit</span>
+          <span class="message-action">Preview</span>
+          <div style="clear: both;"></div>
+        </div>
       </div>
     </div>
     <div class="col-lg-6">
@@ -94,7 +115,21 @@
               $hide = $data == $current_community_right.'_'.$current_language_right ? false : true;
             ?>
             <p data="<?= $data; ?>" <?= $hide ? 'style="display:none;"': ''; ?>>
-              <?= htmlspecialchars($message['poppen'][$this->app->get_language_field($language)]); ?>
+              <?php
+                $raw_text = '';
+                if (isset($message['poppen'][$this->app->get_language_field($language)])) {
+                  $raw_text = $message['poppen'][$this->app->get_language_field($language)];
+                }
+              ?>
+              <?php if (empty($raw_text)): ?>
+                <span class="light-grey">
+                <?= $language == 'en' ? 'STRING IS EMPTY' : ''; ?>
+                <?= $language == 'de' ? 'ZEICHENKETTE IST LEER' : ''; ?>
+                <?= $language == 'es' ? 'LA CADENA ES VACÍA' : ''; ?>
+                </span>
+              <?php else: ?>
+                <?= htmlspecialchars($raw_text); ?>
+              <?php endif; ?>
             </p>
           <?php endforeach; ?>
         <?php endforeach; ?>
