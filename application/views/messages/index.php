@@ -40,9 +40,9 @@
         <?php endforeach; ?>
         </select>
       </div>
-      <div class="options-box">
-        <button name="switch-btn-left" type="button" class="btn btn-primary">Go</button>
-      </div>
+      <button name="switch-btn-left" type="button" class="btn btn-primary">Go</button>
+      <button name="create-btn-left" type="button" class="btn btn-danger message-create">Create</button>
+      <div style="clear: both;"></div>
     </div>
     <div class="col-lg-6">
       <div class="options-box">
@@ -59,9 +59,9 @@
         <?php endforeach; ?>
         </select>
       </div>
-      <div class="options-box">
-        <button name="switch-btn-right" type="button" class="btn btn-primary">Go</button>
-      </div>
+      <button name="switch-btn-right" type="button" class="btn btn-primary">Go</button>
+      <button name="create-btn-right" type="button" class="btn btn-danger message-create">Create</button>
+      <div style="clear: both;"></div>
     </div>
     </form>
   </div>
@@ -87,8 +87,8 @@
               <?php if (empty($raw_text)): ?>
                 <span class="light-grey">
                 <?= $language == 'en' ? 'STRING IS EMPTY' : ''; ?>
-                <?= $language == 'de' ? 'ZEICHENKETTE IST LEER' : ''; ?>
-                <?= $language == 'es' ? 'LA CADENA ES VACÍA' : ''; ?>
+                <?= $language == 'de' ? 'STRING LEER' : ''; ?>
+                <?= $language == 'es' ? 'CADENA ESTÁ VACÍA' : ''; ?>
                 </span>
               <?php else: ?>
                 <?= htmlspecialchars($raw_text); ?>
@@ -124,8 +124,8 @@
               <?php if (empty($raw_text)): ?>
                 <span class="light-grey">
                 <?= $language == 'en' ? 'STRING IS EMPTY' : ''; ?>
-                <?= $language == 'de' ? 'ZEICHENKETTE IST LEER' : ''; ?>
-                <?= $language == 'es' ? 'LA CADENA ES VACÍA' : ''; ?>
+                <?= $language == 'de' ? 'STRING LEER' : ''; ?>
+                <?= $language == 'es' ? 'CADENA ESTÁ VACÍA' : ''; ?>
                 </span>
               <?php else: ?>
                 <?= htmlspecialchars($raw_text); ?>

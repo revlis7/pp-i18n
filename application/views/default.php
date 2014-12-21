@@ -57,6 +57,9 @@
     font-size: 0.7em;
     margin-left: 15px;
   }
+  .message-create {
+    float: right;
+  }
   </style>
 </head>
 <body>
