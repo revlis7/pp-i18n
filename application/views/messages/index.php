@@ -97,8 +97,9 @@
         <?php endforeach; ?>
         <hr class="hr-set" />
         <div>
+          <span class="message-hint">Last Update: <?= date('Y-m-d H:i:s'); ?></span>
           <span class="message-action">Delete</span>
-          <span class="message-action">Edit</span>
+          <span class="message-action"><a href="javascript:void(0);">Edit</a></span>
           <span class="message-action">Preview</span>
           <div style="clear: both;"></div>
         </div>

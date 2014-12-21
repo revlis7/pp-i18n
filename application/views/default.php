@@ -52,6 +52,11 @@
     margin-top: 0px;
     margin-bottom: 10px;
   }
+  .message-hint {
+    float: left;
+    font-size: 0.7em;
+    margin-right: 15px;
+  }
   .message-action {
     float: right;
     font-size: 0.7em;
