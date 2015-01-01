@@ -40,7 +40,7 @@
         <?php endforeach; ?>
         </select>
       </div>
-      <button name="switch-btn-left" type="button" class="btn btn-primary">Go</button>
+      <!-- <button name="switch-btn-left" type="button" class="btn btn-primary">Go</button> -->
       <button name="create-btn-left" type="button" class="btn btn-danger message-create">Create</button>
       <div style="clear: both;"></div>
     </div>
@@ -59,7 +59,7 @@
         <?php endforeach; ?>
         </select>
       </div>
-      <button name="switch-btn-right" type="button" class="btn btn-primary">Go</button>
+      <!-- <button name="switch-btn-right" type="button" class="btn btn-primary">Go</button> -->
       <button name="create-btn-right" type="button" class="btn btn-danger message-create">Create</button>
       <div style="clear: both;"></div>
     </div>
@@ -163,11 +163,27 @@ $(document).ready(function() {
 
   $('button[name="search"]').click(redirectSearchPage);
 
-  $('button[name="switch-btn-left"]').click(function() {
+  // $('button[name="switch-btn-left"]').click(function() {
+  //   switchDisplay('left');
+  // });
+
+  // $('button[name="switch-btn-right"]').click(function() {
+  //   switchDisplay('right');
+  // });
+
+  $('select[name="community-sel-left"]').change(function() {
     switchDisplay('left');
   });
 
-  $('button[name="switch-btn-right"]').click(function() {
+  $('select[name="language-sel-left"]').change(function() {
+    switchDisplay('left');
+  });
+
+  $('select[name="community-sel-right"]').change(function() {
+    switchDisplay('right');
+  });
+
+  $('select[name="language-sel-right"]').change(function() {
     switchDisplay('right');
   });
 
