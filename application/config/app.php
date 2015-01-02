@@ -6,6 +6,8 @@ $config['default_community_right'] = 'gays';
 $config['default_language_left']  = 'de';
 $config['default_language_right'] = 'de';
 
+$config['cookie_name'] = 'settings';
+$config['cookie_expiration'] = 90; // days
 
 $config['community'] = array(
   'poppen' => 'Poppen',

@@ -50,17 +50,32 @@ class App
     return 'trans_'.strtolower($language);
   }
 
+  function get_setting_cookie($name)
+  {
+    return $this->CI->input->cookie($name, true);
+  }
+
   function get_current_community($side = 'left')
   {
     $side = $side == 'left' ? $side : 'right';
-    $key = 'default_community_'.$side;
-    return $this->get($key);
+    $cookie_name = 'community_'.$side;
+    $value = $this->get_setting_cookie($cookie_name);
+    if (empty($value)) {
+      $key = 'default_community_'.$side;
+      return $this->get($key);
+    }
+    return $value;
   }
 
   function get_current_language($side = 'right')
   {
     $side = $side == 'left' ? $side : 'right';
-    $key = 'default_language_'.$side;
-    return $this->get($key);
+    $cookie_name = 'language_'.$side;
+    $value = $this->get_setting_cookie($cookie_name);
+    if (empty($value)) {
+      $key = 'default_language_'.$side;
+      return $this->get($key);
+    }
+    return $value;
   }
 }

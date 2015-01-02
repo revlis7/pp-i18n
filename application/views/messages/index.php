@@ -75,7 +75,8 @@
           <?php foreach($languages as $language => $language_name): ?>
             <?php
               $data = $community.'_'.$language;
-              $hide = $data == $current_community_left.'_'.$current_language_left ? false : true;
+              // $hide = $data == $current_community_left.'_'.$current_language_left ? false : true;
+              $hide = true;
               $raw_text = '';
               if (isset($message['poppen'][$this->app->get_language_field($language)])) {
                 $raw_text = $message['poppen'][$this->app->get_language_field($language)];
@@ -112,7 +113,8 @@
           <?php foreach($languages as $language => $language_name): ?>
             <?php
               $data = $community.'_'.$language;
-              $hide = $data == $current_community_right.'_'.$current_language_right ? false : true;
+              // $hide = $data == $current_community_right.'_'.$current_language_right ? false : true;
+              $hide = true;
             ?>
             <p data="<?= $data; ?>" <?= $hide ? 'style="display:none;"': ''; ?>>
               <?php
@@ -156,20 +158,15 @@ $(document).ready(function() {
     side == 'left' ? side : 'right';
     var community = $('select[name="community-sel-' + side + '"] option:selected').val();
     var language  = $('select[name="language-sel-' + side + '"] option:selected').val();
-    console.log(community, language);
+    // console.log(community, language);
     $('.message-body[side="' + side + '"] > p').hide();
     $('.message-body[side="' + side + '"] > p[data="' + community + '_' + language + '"]').show();
+
+    $.cookie("community_" + side, community, { expires : <?= $this->app->get('cookie_expiration'); ?>, path : '/' });
+    $.cookie("language_" + side, language, { expires : <?= $this->app->get('cookie_expiration'); ?> , path : '/'});
   }
 
   $('button[name="search"]').click(redirectSearchPage);
-
-  // $('button[name="switch-btn-left"]').click(function() {
-  //   switchDisplay('left');
-  // });
-
-  // $('button[name="switch-btn-right"]').click(function() {
-  //   switchDisplay('right');
-  // });
 
   $('select[name="community-sel-left"]').change(function() {
     switchDisplay('left');
@@ -193,5 +190,8 @@ $(document).ready(function() {
       redirectSearchPage();
     }
   });
+
+  switchDisplay('left');
+  switchDisplay('right');
 });
 </script>
