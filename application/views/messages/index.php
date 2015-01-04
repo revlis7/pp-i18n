@@ -75,14 +75,12 @@
           <?php foreach($languages as $language => $language_name): ?>
             <?php
               $data = $community.'_'.$language;
-              // $hide = $data == $current_community_left.'_'.$current_language_left ? false : true;
-              $hide = true;
               $raw_text = '';
               if (isset($message['poppen'][$this->app->get_language_field($language)])) {
                 $raw_text = $message['poppen'][$this->app->get_language_field($language)];
               }
             ?>
-            <p data="<?= $data; ?>" <?= $hide ? 'style="display:none;"': ''; ?>>
+            <p data="<?= $data; ?>" style="display:none;">
             <?php if (empty($raw_text)): ?>
               <span class="light-grey">
               <?= $language == 'en' ? 'STRING IS EMPTY' : ''; ?>
@@ -97,11 +95,17 @@
           <?php endforeach; ?>
         <?php endforeach; ?>
         <hr class="hr-set" />
-        <div>
+        <div class="message-action">
           <span class="message-hint">Last Update: <?= date('Y-m-d H:i:s'); ?></span>
-          <span class="message-action">Delete</span>
-          <span class="message-action"><a href="javascript:void(0);">Edit</a></span>
-          <span class="message-action">Preview</span>
+          <div class="action-base">
+            <span class="action-link">Delete</span>
+            <span class="action-link"><a class="btn-edit" href="javascript:void(0);">Edit</a></span>
+            <span class="action-link">Preview</span>
+          </div>
+          <div class="action-edit" style="display:none;">
+            <span class="action-link">Cancel</span>
+            <span class="action-link"><a href="javascript:void(0);">Save</a></span>
+          </div>
           <div style="clear: both;"></div>
         </div>
       </div>
@@ -111,12 +115,8 @@
         <h4><?= $string_name; ?></h4>
         <?php foreach($communities as $community => $community_name): ?>
           <?php foreach($languages as $language => $language_name): ?>
-            <?php
-              $data = $community.'_'.$language;
-              // $hide = $data == $current_community_right.'_'.$current_language_right ? false : true;
-              $hide = true;
-            ?>
-            <p data="<?= $data; ?>" <?= $hide ? 'style="display:none;"': ''; ?>>
+            <?php $data = $community.'_'.$language; ?>
+            <p data="<?= $data; ?>" style="display:none;">
               <?php
                 $raw_text = '';
                 if (isset($message['poppen'][$this->app->get_language_field($language)])) {
@@ -189,6 +189,10 @@ $(document).ready(function() {
       e.preventDefault();
       redirectSearchPage();
     }
+  });
+
+  $('.btn-edit').click(function() {
+    console.log($(this).html());
   });
 
   switchDisplay('left');

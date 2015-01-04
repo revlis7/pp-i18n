@@ -58,7 +58,7 @@
     font-size: 0.7em;
     margin-right: 15px;
   }
-  .message-action {
+  .message-action .action-link {
     float: right;
     font-size: 0.7em;
     margin-left: 15px;
