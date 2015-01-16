@@ -80,20 +80,21 @@
                 $raw_text = $message['poppen'][$this->app->get_language_field($language)];
               }
             ?>
-            <p data="<?= $data; ?>" style="display:none;">
-            <?php if (empty($raw_text)): ?>
-              <span class="light-grey">
-              <?= $language == 'en' ? 'STRING IS EMPTY' : ''; ?>
-              <?= $language == 'de' ? 'STRING LEER' : ''; ?>
-              <?= $language == 'es' ? 'CADENA ESTÁ VACÍA' : ''; ?>
-              </span>
+            <?php if (empty($raw_text) && false): ?>
+              <p class="message-text" data="<?= $data; ?>" style="display:none;">
+                <span class="light-grey">
+                <?= $language == 'en' ? 'STRING IS EMPTY' : ''; ?>
+                <?= $language == 'de' ? 'STRING LEER' : ''; ?>
+                <?= $language == 'es' ? 'CADENA ESTÁ VACÍA' : ''; ?>
+                </span>
+              </p>
             <?php else: ?>
-              <?= htmlspecialchars($raw_text); ?>
+              <p class="message-text" data="<?= $data; ?>" style="display:none;"><?= htmlspecialchars($raw_text); ?></p>
             <?php endif; ?>
             </p>
-            <textarea class="form-control message-edit" style="display: none;"><?= $raw_text; ?></textarea>
           <?php endforeach; ?>
         <?php endforeach; ?>
+        <textarea class="form-control message-edit" style="display: none;"></textarea>
         <hr class="hr-set" />
         <div class="message-action">
           <span class="message-hint">Last Update: <?= date('Y-m-d H:i:s'); ?></span>
@@ -115,14 +116,14 @@
         <h4><?= $string_name; ?></h4>
         <?php foreach($communities as $community => $community_name): ?>
           <?php foreach($languages as $language => $language_name): ?>
-            <?php $data = $community.'_'.$language; ?>
+            <?php
+              $data = $community.'_'.$language;
+              $raw_text = '';
+              if (isset($message['poppen'][$this->app->get_language_field($language)])) {
+                $raw_text = $message['poppen'][$this->app->get_language_field($language)];
+              }
+            ?>
             <p data="<?= $data; ?>" style="display:none;">
-              <?php
-                $raw_text = '';
-                if (isset($message['poppen'][$this->app->get_language_field($language)])) {
-                  $raw_text = $message['poppen'][$this->app->get_language_field($language)];
-                }
-              ?>
               <?php if (empty($raw_text)): ?>
                 <span class="light-grey">
                 <?= $language == 'en' ? 'STRING IS EMPTY' : ''; ?>
@@ -154,11 +155,21 @@ $(document).ready(function() {
     window.location = uri;
   };
 
+  var getCommunity = function(side) {
+    side == 'left' ? side : 'right';
+    return $('select[name="community-sel-' + side + '"] option:selected').val();
+  }
+
+  var getLanguage = function(side) {
+    side == 'left' ? side : 'right';
+    return $('select[name="language-sel-' + side + '"] option:selected').val();
+  }
+
   var switchDisplay = function(side) {
     side == 'left' ? side : 'right';
-    var community = $('select[name="community-sel-' + side + '"] option:selected').val();
-    var language  = $('select[name="language-sel-' + side + '"] option:selected').val();
-    // console.log(community, language);
+    var community = getCommunity(side);
+    var language  = getLanguage(side);
+
     $('.message-body[side="' + side + '"] > p').hide();
     $('.message-body[side="' + side + '"] > p[data="' + community + '_' + language + '"]').show();
 
@@ -192,7 +203,17 @@ $(document).ready(function() {
   });
 
   $('.btn-edit').click(function() {
-    console.log($(this).html());
+    $(this).parents('.message-body').find('p.message-text').hide();
+
+    var side = $(this).parents('.message-body').attr('side');
+    var community = getCommunity(side);
+    var language  = getLanguage(side);
+
+    var textarea = $(this).parents('.message-body').find('textarea');
+    var text = $(this).parents('.message-body').find('p[data="' + community + '_' + language + '"]').html();
+
+    textarea.val(text);
+    textarea.show();
   });
 
   switchDisplay('left');
