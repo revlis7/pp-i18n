@@ -80,8 +80,8 @@
                 $raw_text = $message['poppen'][$this->app->get_language_field($language)];
               }
             ?>
-            <?php if (empty($raw_text) && false): ?>
-              <p class="message-text" data="<?= $data; ?>" style="display:none;">
+            <?php if (empty($raw_text)): ?>
+              <p class="message-text" data="<?= $data; ?>" data-empty="true" style="display:none;">
                 <span class="light-grey">
                 <?= $language == 'en' ? 'STRING IS EMPTY' : ''; ?>
                 <?= $language == 'de' ? 'STRING LEER' : ''; ?>
@@ -91,7 +91,6 @@
             <?php else: ?>
               <p class="message-text" data="<?= $data; ?>" style="display:none;"><?= htmlspecialchars($raw_text); ?></p>
             <?php endif; ?>
-            </p>
           <?php endforeach; ?>
         <?php endforeach; ?>
         <textarea class="form-control message-edit" style="display: none;"></textarea>
@@ -171,6 +170,7 @@ $(document).ready(function() {
     var language  = getLanguage(side);
 
     $('.message-body[side="' + side + '"] > p').hide();
+    $('.message-body[side="' + side + '"] > textarea').hide();
     $('.message-body[side="' + side + '"] > p[data="' + community + '_' + language + '"]').show();
 
     $.cookie("community_" + side, community, { expires : <?= $this->app->get('cookie_expiration'); ?>, path : '/' });
@@ -210,9 +210,11 @@ $(document).ready(function() {
     var language  = getLanguage(side);
 
     var textarea = $(this).parents('.message-body').find('textarea');
-    var text = $(this).parents('.message-body').find('p[data="' + community + '_' + language + '"]').html();
+    var text_dom = $(this).parents('.message-body').find('p[data="' + community + '_' + language + '"]')
 
-    textarea.val(text);
+    if (!text_dom.attr('data-empty')) {
+      textarea.val(text_dom.text());
+    }
     textarea.show();
   });
 
