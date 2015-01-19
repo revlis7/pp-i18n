@@ -76,8 +76,8 @@
             <?php
               $data = $community.'_'.$language;
               $raw_text = '';
-              if (isset($message['poppen'][$this->app->get_language_field($language)])) {
-                $raw_text = $message['poppen'][$this->app->get_language_field($language)];
+              if (isset($message[$community][$this->app->get_language_field($language)])) {
+                $raw_text = $message[$community][$this->app->get_language_field($language)];
               }
             ?>
             <?php if (empty($raw_text)): ?>
@@ -118,23 +118,38 @@
             <?php
               $data = $community.'_'.$language;
               $raw_text = '';
-              if (isset($message['poppen'][$this->app->get_language_field($language)])) {
-                $raw_text = $message['poppen'][$this->app->get_language_field($language)];
+              if (isset($message[$community][$this->app->get_language_field($language)])) {
+                $raw_text = $message[$community][$this->app->get_language_field($language)];
               }
             ?>
-            <p data="<?= $data; ?>" style="display:none;">
-              <?php if (empty($raw_text)): ?>
+            <?php if (empty($raw_text)): ?>
+              <p class="message-text" data="<?= $data; ?>" data-empty="true" style="display:none;">
                 <span class="light-grey">
                 <?= $language == 'en' ? 'STRING IS EMPTY' : ''; ?>
                 <?= $language == 'de' ? 'STRING LEER' : ''; ?>
                 <?= $language == 'es' ? 'CADENA ESTÁ VACÍA' : ''; ?>
                 </span>
-              <?php else: ?>
-                <?= htmlspecialchars($raw_text); ?>
-              <?php endif; ?>
-            </p>
+              </p>
+            <?php else: ?>
+              <p class="message-text" data="<?= $data; ?>" style="display:none;"><?= htmlspecialchars($raw_text); ?></p>
+            <?php endif; ?>
           <?php endforeach; ?>
         <?php endforeach; ?>
+        <textarea class="form-control message-edit" style="display: none;"></textarea>
+        <hr class="hr-set" />
+        <div class="message-action">
+          <span class="message-hint">Last Update: <?= date('Y-m-d H:i:s'); ?></span>
+          <div class="action-base">
+            <span class="action-link">Delete</span>
+            <span class="action-link"><a class="btn-edit" href="javascript:void(0);">Edit</a></span>
+            <span class="action-link">Preview</span>
+          </div>
+          <div class="action-edit" style="display:none;">
+            <span class="action-link">Cancel</span>
+            <span class="action-link"><a href="javascript:void(0);">Save</a></span>
+          </div>
+          <div style="clear: both;"></div>
+        </div>
       </div>
     </div>
   </div>
@@ -210,12 +225,15 @@ $(document).ready(function() {
     var language  = getLanguage(side);
 
     var textarea = $(this).parents('.message-body').find('textarea');
-    var text_dom = $(this).parents('.message-body').find('p[data="' + community + '_' + language + '"]')
+    var text_dom = $(this).parents('.message-body').find('p[data="' + community + '_' + language + '"]');
 
     if (!text_dom.attr('data-empty')) {
       textarea.val(text_dom.text());
     }
     textarea.show();
+
+    $(this).parents('.message-body').find('div.action-base').hide();
+    $(this).parents('.message-body').find('div.action-edit').show();
   });
 
   switchDisplay('left');
