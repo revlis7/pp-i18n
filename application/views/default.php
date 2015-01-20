@@ -46,6 +46,9 @@
     margin-bottom: 15px;
     padding: 10px;
   }
+  .message-name {
+    word-break: break-all;
+  }
   .light-grey {
     color: #cccccc;
   }

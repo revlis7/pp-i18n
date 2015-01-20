@@ -71,7 +71,7 @@
   <div class="row">
     <div class="col-lg-6">
       <div class="message-body" side="left">
-        <h4><?= $string_name; ?></h4>
+        <h4 class="message-name"><?= $string_name; ?></h4>
         <?php foreach($communities as $community => $community_name): ?>
           <?php foreach($languages as $language => $language_name): ?>
             <?php
@@ -115,7 +115,7 @@
     </div>
     <div class="col-lg-6">
       <div class="message-body" side="right">
-        <h4><?= $string_name; ?></h4>
+        <h4 class="message-name"><?= $string_name; ?></h4>
         <?php foreach($communities as $community => $community_name): ?>
           <?php foreach($languages as $language => $language_name): ?>
             <?php
