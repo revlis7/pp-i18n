@@ -98,7 +98,7 @@
         <hr class="hr-set" />
         <div class="message-action">
           <?php foreach($communities as $community => $community_name): ?>
-            <span class="message-hint">Last Update: <?= date('Y-m-d H:i:s', $message[$community]['updated_at']); ?></span>
+            <span data="<?= $community; ?>" class="message-hint" style="display:none;">Last Update: <?= date('Y-m-d H:i:s', $message[$community]['updated_at']); ?></span>
           <?php endforeach; ?>
           <div class="action-base">
             <span class="action-link">Delete</span>
@@ -141,7 +141,9 @@
         <textarea class="form-control message-edit" style="display: none;"></textarea>
         <hr class="hr-set" />
         <div class="message-action">
-          <span class="message-hint">Last Update: <?= date('Y-m-d H:i:s'); ?></span>
+          <?php foreach($communities as $community => $community_name): ?>
+            <span data="<?= $community; ?>" class="message-hint" style="display:none;">Last Update: <?= date('Y-m-d H:i:s', $message[$community]['updated_at']); ?></span>
+          <?php endforeach; ?>
           <div class="action-base">
             <span class="action-link">Delete</span>
             <span class="action-link"><a class="btn-edit" href="javascript:void(0);">Edit</a></span>
@@ -192,6 +194,8 @@ $(document).ready(function() {
     $('.message-body[side="' + side + '"] > .message-action > .action-base').show();
     $('.message-body[side="' + side + '"] > .message-action > .action-edit').hide();
     $('.message-body[side="' + side + '"] > p[data="' + community + '_' + language + '"]').show();
+    $('.message-body[side="' + side + '"] > .message-action > .message-hint').hide();
+    $('.message-body[side="' + side + '"] > .message-action > .message-hint[data="' + community + '"]').show();
 
     $.cookie("community_" + side, community, { expires : <?= $this->app->get('cookie_expiration'); ?>, path : '/' });
     $.cookie("language_" + side, language, { expires : <?= $this->app->get('cookie_expiration'); ?> , path : '/'});
