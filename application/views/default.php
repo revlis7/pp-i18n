@@ -10,6 +10,12 @@
   <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
   <script src="/static/js/jquery.cookie.js"></script>
   <style>
+  body {
+    padding-top: 150px;
+  }
+  header {
+    background: white;
+  }
   .break {
     -ms-word-break: break-all;
     word-break: break-all;
@@ -75,7 +81,7 @@
   </style>
 </head>
 <body>
-  <header id="top" class="navbar navbar-inverse navbar-static-top bs-docs-nav" role="banner">
+  <!-- <header id="top" class="navbar navbar-inverse navbar-static-top bs-docs-nav" role="banner">
     <div class="container-fluid">
       <div class="navbar-header">
         <a class="navbar-brand" href="/ ">Translate Tool</a>
@@ -86,7 +92,7 @@
         </ul>
       </nav>
     </div>
-  </header>
+  </header> -->
 <?php echo $contents; ?>
 </body>
 </html>

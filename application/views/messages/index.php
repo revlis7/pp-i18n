@@ -1,71 +1,71 @@
-<div class="container-fluid">
-  <div class="row">
-    <form role="form">
-      <div class="col-lg-2">
-        <label>Search in:</label>
-        <?= form_dropdown('search', array('string_name' => 'String Name', 'translation' => 'Translation'), $search, 'class="form-control"'); ?>
-      </div>
-      <div class="col-lg-3">
-        <label>Keyword:</label>
-        <div class="input-group">
-          <input type="text" name="keyword" class="form-control" value="<?= $keyword; ?>">
-          <div class="input-group-btn">
-            <button name="search" type="button" class="btn btn-default"><span class="glyphicon glyphicon-search"></span></button>
+<header id="top" class="navbar navbar-fixed-top bs-docs-nav" role="banner">
+  <div class="container-fluid">
+    <div class="row">
+      <form role="form">
+        <div class="col-lg-2">
+          <label>Search in:</label>
+          <?= form_dropdown('search', array('string_name' => 'String Name', 'translation' => 'Translation'), $search, 'class="form-control"'); ?>
+        </div>
+        <div class="col-lg-3">
+          <label>Keyword:</label>
+          <div class="input-group">
+            <input type="text" name="keyword" class="form-control" value="<?= $keyword; ?>">
+            <div class="input-group-btn">
+              <button name="search" type="button" class="btn btn-default"><span class="glyphicon glyphicon-search"></span></button>
+            </div>
           </div>
         </div>
+      </form>
+    </div>
+
+    <hr />
+
+    <div class="row">
+      <form role="form" autocomplete="off">
+      <div class="col-lg-6">
+        <div class="options-box">
+          <select name="community-sel-left" class="form-control">
+          <?php foreach($communities as $community => $community_name): ?>
+            <option value="<?= $community; ?>" <?= $community == $current_community_left ? 'selected="selected"' : ''; ?>><?= $community_name; ?></option>
+          <?php endforeach; ?>
+          </select>
+        </div>
+        <div class="options-box">
+          <select name="language-sel-left" class="form-control">
+          <?php foreach($languages as $language => $language_name): ?>
+            <option value="<?= $language; ?>" <?= $language == $current_language_left ? 'selected="selected"' : ''; ?>><?= $language_name; ?></option>
+          <?php endforeach; ?>
+          </select>
+        </div>
+        <!-- <button name="switch-btn-left" type="button" class="btn btn-primary">Go</button> -->
+        <button name="create-btn-left" type="button" class="btn btn-danger message-create">Create</button>
+        <div style="clear: both;"></div>
       </div>
-    </form>
+      <div class="col-lg-6">
+        <div class="options-box">
+          <select name="community-sel-right" class="form-control">
+          <?php foreach($communities as $community => $community_name): ?>
+            <option value="<?= $community; ?>" <?= $community == $current_community_right ? 'selected="selected"' : ''; ?>><?= $community_name; ?></option>
+          <?php endforeach; ?>
+          </select>
+        </div>
+        <div class="options-box">
+          <select name="language-sel-right" class="form-control">
+          <?php foreach($languages as $language => $language_name): ?>
+            <option value="<?= $language; ?>" <?= $language == $current_language_right ? 'selected="selected"' : ''; ?>><?= $language_name; ?></option>
+          <?php endforeach; ?>
+          </select>
+        </div>
+        <!-- <button name="switch-btn-right" type="button" class="btn btn-primary">Go</button> -->
+        <button name="create-btn-right" type="button" class="btn btn-danger message-create">Create</button>
+        <div style="clear: both;"></div>
+      </div>
+      </form>
+    </div>
   </div>
-</div>
+</header>
 
 <div class="container-fluid">
-<?php echo $page_links ? $page_links : '<hr />'; ?>
-</div>
-
-<div class="container-fluid">
-  <div class="row">
-    <form role="form" autocomplete="off">
-    <div class="col-lg-6">
-      <div class="options-box">
-        <select name="community-sel-left" class="form-control">
-        <?php foreach($communities as $community => $community_name): ?>
-          <option value="<?= $community; ?>" <?= $community == $current_community_left ? 'selected="selected"' : ''; ?>><?= $community_name; ?></option>
-        <?php endforeach; ?>
-        </select>
-      </div>
-      <div class="options-box">
-        <select name="language-sel-left" class="form-control">
-        <?php foreach($languages as $language => $language_name): ?>
-          <option value="<?= $language; ?>" <?= $language == $current_language_left ? 'selected="selected"' : ''; ?>><?= $language_name; ?></option>
-        <?php endforeach; ?>
-        </select>
-      </div>
-      <!-- <button name="switch-btn-left" type="button" class="btn btn-primary">Go</button> -->
-      <button name="create-btn-left" type="button" class="btn btn-danger message-create">Create</button>
-      <div style="clear: both;"></div>
-    </div>
-    <div class="col-lg-6">
-      <div class="options-box">
-        <select name="community-sel-right" class="form-control">
-        <?php foreach($communities as $community => $community_name): ?>
-          <option value="<?= $community; ?>" <?= $community == $current_community_right ? 'selected="selected"' : ''; ?>><?= $community_name; ?></option>
-        <?php endforeach; ?>
-        </select>
-      </div>
-      <div class="options-box">
-        <select name="language-sel-right" class="form-control">
-        <?php foreach($languages as $language => $language_name): ?>
-          <option value="<?= $language; ?>" <?= $language == $current_language_right ? 'selected="selected"' : ''; ?>><?= $language_name; ?></option>
-        <?php endforeach; ?>
-        </select>
-      </div>
-      <!-- <button name="switch-btn-right" type="button" class="btn btn-primary">Go</button> -->
-      <button name="create-btn-right" type="button" class="btn btn-danger message-create">Create</button>
-      <div style="clear: both;"></div>
-    </div>
-    </form>
-  </div>
-
   <?php foreach($page_messages as $string_name => $message): ?>
   <?php $update_ts = 0; ?>
   <div class="row">
@@ -83,11 +83,7 @@
             ?>
             <?php if (empty($raw_text)): ?>
               <p class="message-text" data="<?= $data; ?>" data-empty="true" style="display:none;">
-                <span class="light-grey">
-                <?= $language == 'en' ? 'STRING IS EMPTY' : ''; ?>
-                <?= $language == 'de' ? 'STRING LEER' : ''; ?>
-                <?= $language == 'es' ? 'CADENA ESTÁ VACÍA' : ''; ?>
-                </span>
+                <span class="light-grey">STRING IS EMPTY</span>
               </p>
             <?php else: ?>
               <p class="message-text" data="<?= $data; ?>" style="display:none;"><?= htmlspecialchars($raw_text); ?></p>
@@ -127,11 +123,7 @@
             ?>
             <?php if (empty($raw_text)): ?>
               <p class="message-text" data="<?= $data; ?>" data-empty="true" style="display:none;">
-                <span class="light-grey">
-                <?= $language == 'en' ? 'STRING IS EMPTY' : ''; ?>
-                <?= $language == 'de' ? 'STRING LEER' : ''; ?>
-                <?= $language == 'es' ? 'CADENA ESTÁ VACÍA' : ''; ?>
-                </span>
+                <span class="light-grey">STRING IS EMPTY</span>
               </p>
             <?php else: ?>
               <p class="message-text" data="<?= $data; ?>" style="display:none;"><?= htmlspecialchars($raw_text); ?></p>
