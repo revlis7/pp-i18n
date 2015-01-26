@@ -76,7 +76,7 @@ class Messages extends CI_Controller
   {
     $this->getParams();
     $this->i18n_mongo_handler->update($this->comm, $this->stn, $this->lang, $this->message);
-    echo json_encode(array('r' => 'ok'));
+    echo json_encode(array('r' => 'ok', 'message' => htmlspecialchars($this->message)));
   }
 
   private function getParams()

@@ -17,9 +17,7 @@
         </div>
       </form>
     </div>
-
     <hr />
-
     <div class="row">
       <form role="form" autocomplete="off">
       <div class="col-lg-6">
@@ -103,7 +101,7 @@
           </div>
           <div class="action-edit" style="display:none;">
             <span class="action-link">Cancel</span>
-            <span class="action-link"><a href="javascript:void(0);">Save</a></span>
+            <span class="action-link"><a class="btn-save" href="javascript:void(0);">Save</a></span>
           </div>
           <div style="clear: both;"></div>
         </div>
@@ -143,7 +141,7 @@
           </div>
           <div class="action-edit" style="display:none;">
             <span class="action-link">Cancel</span>
-            <span class="action-link"><a href="javascript:void(0);">Save</a></span>
+            <span class="action-link"><a class="btn-save" href="javascript:void(0);">Save</a></span>
           </div>
           <div style="clear: both;"></div>
         </div>
@@ -228,6 +226,7 @@ $(document).ready(function() {
     var textarea = $(this).parents('.message-body').find('textarea');
     var text_dom = $(this).parents('.message-body').find('p[data="' + community + '_' + language + '"]');
 
+    // do not show 'string is empty' sentence in textarea
     if (!text_dom.attr('data-empty')) {
       textarea.val(text_dom.text());
     }
@@ -235,6 +234,40 @@ $(document).ready(function() {
 
     $(this).parents('.message-body').find('div.action-base').hide();
     $(this).parents('.message-body').find('div.action-edit').show();
+  });
+
+  $('.btn-save').click(function() {
+    var side = $(this).parents('.message-body').attr('side');
+    var community = getCommunity(side);
+    var language  = getLanguage(side);
+    var string_name = $(this).parents('.message-body').find('h4.message-name').html();
+
+    var p_box       = $(this).parents('.message-body').find('p[data="' + community + '_' + language + '"]');
+    var textarea    = $(this).parents('.message-body').find('textarea');
+    var action_base = $(this).parents('.message-body').find('div.action-base');
+    var action_edit = $(this).parents('.message-body').find('div.action-edit');
+
+    var data = {
+      'comm' : community,
+      'lang' : language,
+      'stn'  : string_name,
+      'message' : textarea.val()
+    }
+    $.ajax({
+      type: "POST",
+      url: '/messages/save',
+      data: data,
+      success: function(result) {
+        if (result.r == 'ok') {
+          textarea.hide();
+          p_box.html(result.message);
+          p_box.show();
+          action_base.show();
+          action_edit.hide();
+        }
+      },
+      dataType: 'json'
+    });
   });
 
   switchDisplay('left');

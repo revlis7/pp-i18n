@@ -11,10 +11,13 @@
   <script src="/static/js/jquery.cookie.js"></script>
   <style>
   body {
-    padding-top: 150px;
+    padding-top: 160px;
   }
   header {
     background: white;
+  }
+  header .row {
+    margin-top: 5px;
   }
   .break {
     -ms-word-break: break-all;
@@ -81,18 +84,6 @@
   </style>
 </head>
 <body>
-  <!-- <header id="top" class="navbar navbar-inverse navbar-static-top bs-docs-nav" role="banner">
-    <div class="container-fluid">
-      <div class="navbar-header">
-        <a class="navbar-brand" href="/ ">Translate Tool</a>
-      </div>
-      <nav role="navigation" class="collapse navbar-collapse bs-navbar-collapse">
-        <ul class="nav navbar-nav navbar-right">
-          <li><a href="javascript:void();">Settings</a></li>
-        </ul>
-      </nav>
-    </div>
-  </header> -->
 <?php echo $contents; ?>
 </body>
 </html>
