@@ -100,7 +100,7 @@
             <span class="action-link">Preview</span>
           </div>
           <div class="action-edit" style="display:none;">
-            <span class="action-link">Cancel</span>
+            <span class="action-link"><a class="btn-cancel" href="javascript:void(0);">Cancel</a></span>
             <span class="action-link"><a class="btn-save" href="javascript:void(0);">Save</a></span>
           </div>
           <div style="clear: both;"></div>
@@ -140,7 +140,7 @@
             <span class="action-link">Preview</span>
           </div>
           <div class="action-edit" style="display:none;">
-            <span class="action-link">Cancel</span>
+            <span class="action-link"><a class="btn-cancel" href="javascript:void(0);">Cancel</a></span>
             <span class="action-link"><a class="btn-save" href="javascript:void(0);">Save</a></span>
           </div>
           <div style="clear: both;"></div>
@@ -261,6 +261,9 @@ $(document).ready(function() {
         if (result.r == 'ok') {
           textarea.hide();
           p_box.html(result.message);
+          if (result.message == '') {
+            p_box.html('<span class="light-grey">STRING IS EMPTY</span>');
+          }
           p_box.show();
           action_base.show();
           action_edit.hide();
@@ -268,6 +271,23 @@ $(document).ready(function() {
       },
       dataType: 'json'
     });
+  });
+
+  $('.btn-cancel').click(function() {
+    var side = $(this).parents('.message-body').attr('side');
+    var community = getCommunity(side);
+    var language  = getLanguage(side);
+    var string_name = $(this).parents('.message-body').find('h4.message-name').html();
+
+    var p_box       = $(this).parents('.message-body').find('p[data="' + community + '_' + language + '"]');
+    var textarea    = $(this).parents('.message-body').find('textarea');
+    var action_base = $(this).parents('.message-body').find('div.action-base');
+    var action_edit = $(this).parents('.message-body').find('div.action-edit');
+
+    textarea.val('').hide();
+    p_box.show();
+    action_base.show();
+    action_edit.hide();
   });
 
   switchDisplay('left');
