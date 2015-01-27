@@ -43,7 +43,7 @@ class Messages extends CI_Controller
     $this->load->helper(array('form', 'url'));
 
     // $this->output->enable_profiler(true);
-
+    $keyword = html_entity_decode(rawurldecode($keyword));
     if (empty($keyword)) {
       redirect('/');
     }
@@ -103,14 +103,9 @@ class Messages extends CI_Controller
     $search  = !empty($search)  ? $search : 'string_name';
     $keyword = !empty($keyword) ? preg_replace('/\*/', '.*', $keyword) : '.*';
 
-    // if ($search != 'string_name') {
-
-    // }
-
-
     switch($search) {
       case 'string_name':
-        $regex  = array('$regex' => new MongoRegex("/^".$keyword."$/"));
+        $regex  = array('$regex' => new MongoRegex("/".$keyword."/"));
         $g_docs = $this->tnc_mongo->db->$gays_collection->find(array('string_name' => $regex));
         $g_docs->sort(array('updated_at' => 1));
         $p_docs = $this->tnc_mongo->db->$poppen_collection->find(array('string_name' => $regex));
