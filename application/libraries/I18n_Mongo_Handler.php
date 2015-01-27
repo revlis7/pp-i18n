@@ -17,6 +17,10 @@ class I18n_Mongo_Handler
 
   public function update($community, $string_name, $language, $message)
   {
+    $old_trans = $this->collection_list[$community]->findOne(array('string_name' => $string_name));
+    if ($message == $old_trans['trans_'.$language]) {
+      return;
+    }
     $field = $this->CI->app->get_language_field($language);
     $new_message = array('$set' => array(
       $field       => $message,
