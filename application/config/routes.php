@@ -40,6 +40,7 @@
 
 $route['messages/page']      = "messages/index";
 $route['messages/page/:num'] = "messages/index";
+$route['search/(:any)/keyword'] = "messages/search/$1";
 $route['search/(:any)/keyword/(:any)/page/(:num)'] = "messages/search/$1/$2/$3";
 $route['search/(:any)/keyword/(:any)'] = "messages/search/$1/$2";
 $route['default_controller'] = "messages/index";

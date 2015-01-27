@@ -38,11 +38,15 @@ class Messages extends CI_Controller
     $this->template->load('default', 'messages/index', $data);
   }
 
-  public function search($search = 'string_name', $keyword = '*', $page = 1)
+  public function search($search = 'string_name', $keyword = '', $page = 1)
   {
-    $this->load->helper(array('form'));
+    $this->load->helper(array('form', 'url'));
 
     // $this->output->enable_profiler(true);
+
+    if (empty($keyword)) {
+      redirect('/');
+    }
 
     $messages = $this->searchInMongo($search, $keyword);
 
