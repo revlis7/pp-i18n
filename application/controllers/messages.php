@@ -43,6 +43,7 @@ class Messages extends CI_Controller
     $this->load->helper(array('form', 'url'));
 
     // $this->output->enable_profiler(true);
+
     $keyword = html_entity_decode(rawurldecode($keyword));
     if (empty($keyword)) {
       redirect('/');
