@@ -158,9 +158,11 @@
 <script>
 $(document).ready(function() {
   var redirectSearchPage = function() {
-    var search  = $('select[name="search"] option:selected').val();
-    var keyword = $('input[name="keyword"]').val();
-    var uri = '/search/' + search + '/keyword/' + keyword;
+    var params = {
+      search  : $('select[name="search"] option:selected').val(),
+      keyword : $('input[name="keyword"]').val()
+    };
+    var uri = '/messages/search?' + $.param(params);
     window.location = uri;
   };
 
