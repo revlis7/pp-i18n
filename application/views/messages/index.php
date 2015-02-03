@@ -88,11 +88,11 @@
             <?php endif; ?>
           <?php endforeach; ?>
         <?php endforeach; ?>
-        <textarea class="form-control message-edit" style="display: none;"></textarea>
+        <textarea class="form-control message-edit" rows="5" style="display: none;"></textarea>
         <hr class="hr-set" />
         <div class="message-action">
           <?php foreach($communities as $community => $community_name): ?>
-            <span data="<?= $community; ?>" class="message-hint" style="display:none;">Last Update: <?= date('Y-m-d H:i:s', $message[$community]['updated_at']); ?></span>
+            <span data="<?= $community; ?>" class="message-hint" style="display:none;">Last Update: <span class="message-hint-ts"><?= date('Y-m-d H:i:s', $message[$community]['updated_at']); ?></span></span>
           <?php endforeach; ?>
           <div class="action-base">
             <span class="action-link">Delete</span>
@@ -128,11 +128,11 @@
             <?php endif; ?>
           <?php endforeach; ?>
         <?php endforeach; ?>
-        <textarea class="form-control message-edit" style="display: none;"></textarea>
+        <textarea class="form-control message-edit" rows="5" style="display: none;"></textarea>
         <hr class="hr-set" />
         <div class="message-action">
           <?php foreach($communities as $community => $community_name): ?>
-            <span data="<?= $community; ?>" class="message-hint" style="display:none;">Last Update: <?= date('Y-m-d H:i:s', $message[$community]['updated_at']); ?></span>
+            <span data="<?= $community; ?>" class="message-hint" style="display:none;">Last Update: <span class="message-hint-ts"><?= date('Y-m-d H:i:s', $message[$community]['updated_at']); ?></span></span>
           <?php endforeach; ?>
           <div class="action-base">
             <span class="action-link">Delete</span>
@@ -248,6 +248,7 @@ $(document).ready(function() {
     var textarea    = $(this).parents('.message-body').find('textarea');
     var action_base = $(this).parents('.message-body').find('div.action-base');
     var action_edit = $(this).parents('.message-body').find('div.action-edit');
+    var update_ts   = $(this).parents('.message-body').find('span.message-hint[data="' + community + '"] > .message-hint-ts');
 
     var data = {
       'comm' : community,
@@ -265,6 +266,9 @@ $(document).ready(function() {
           p_box.html(result.message);
           if (result.message == '') {
             p_box.html('<span class="light-grey">STRING IS EMPTY</span>');
+          }
+          if (result.update_ts) {
+            update_ts.html(result.update_ts);
           }
           p_box.show();
           action_base.show();

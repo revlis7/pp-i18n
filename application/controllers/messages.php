@@ -84,8 +84,13 @@ class Messages extends CI_Controller
   public function save()
   {
     $this->getParams();
-    $this->i18n_mongo_handler->update($this->comm, $this->stn, $this->lang, $this->message);
-    echo json_encode(array('r' => 'ok', 'message' => htmlspecialchars($this->message)));
+    // TODO insert or update
+    $update_ts = $this->i18n_mongo_handler->update($this->comm, $this->stn, $this->lang, $this->message);
+    if ($update_ts) {
+      echo json_encode(array('r' => 'ok', 'message' => htmlspecialchars($this->message), 'update_ts' => date('Y-m-d H:i:s', $update_ts)));
+    } else {
+      echo json_encode(array('r' => 'ko', 'message' => 'Update failed'));
+    }
   }
 
   private function getParams()
