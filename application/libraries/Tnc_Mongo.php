@@ -12,13 +12,14 @@ class Tnc_Mongo extends Mongo
     $ci->load->config('mongo');
 
     // Fetch Mongo server and database configuration
-    $server = $ci->config->item('mongo_server');
-    $dbname = $ci->config->item('mongo_dbname');
+    $server  = $ci->config->item('mongo_server');
+    $dbname  = $ci->config->item('mongo_dbname');
+    $options = $ci->config->item('mongo_options');
 
     // Initialise Mongo
     if ($server)
     {
-      parent::__construct($server);
+      parent::__construct($server, $options);
     }
     else
     {
