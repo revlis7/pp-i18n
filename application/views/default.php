@@ -5,10 +5,12 @@
   <title>The Netcircle - Translate Tool</title>
   <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
   <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap-theme.min.css">
+  <link href="/static/css/bootstrap-dialog.css" rel="stylesheet" type="text/css" />
   <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
   <script src="//code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
   <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
   <script src="/static/js/jquery.cookie.js"></script>
+  <script src="/static/js/bootstrap-dialog.js"></script>
   <style>
   body {
     padding-top: 160px;

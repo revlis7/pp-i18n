@@ -15,6 +15,12 @@
             </div>
           </div>
         </div>
+        <div class="col-lg-2">
+          <label>&nbsp;</label>
+          <div class="input-group">
+              <button name="create" type="button" class="btn btn-primary message-create">Create</button>
+          </div>
+        </div>
       </form>
     </div>
     <hr />
@@ -36,7 +42,7 @@
           </select>
         </div>
         <!-- <button name="switch-btn-left" type="button" class="btn btn-primary">Go</button> -->
-        <button name="create-btn-left" type="button" class="btn btn-danger message-create">Create</button>
+        <!-- <button name="create-btn-left" type="button" class="btn btn-danger message-create">Create</button> -->
         <div style="clear: both;"></div>
       </div>
       <div class="col-lg-6">
@@ -55,7 +61,7 @@
           </select>
         </div>
         <!-- <button name="switch-btn-right" type="button" class="btn btn-primary">Go</button> -->
-        <button name="create-btn-right" type="button" class="btn btn-danger message-create">Create</button>
+        <!-- <button name="create-btn-right" type="button" class="btn btn-danger message-create">Create</button> -->
         <div style="clear: both;"></div>
       </div>
       </form>
@@ -294,6 +300,39 @@ $(document).ready(function() {
     p_box.show();
     action_base.show();
     action_edit.hide();
+  });
+
+  $('button[name="create"]').click(function() {
+    BootstrapDialog.show({
+      title: 'Create new string',
+      message: 'Input new string name: <input type="text" class="form-control">',
+      // onhide: function(dialogRef){
+      //   var fruit = dialogRef.getModalBody().find('input').val();
+      //   if($.trim(fruit.toLowerCase()) !== 'banana') {
+      //     alert('Need banana!');
+      //     return false;
+      //   }
+      // },
+      buttons: [{
+        label: 'Cancel',
+        action: function(dialogRef) {
+          dialogRef.close();
+        }
+      },
+      {
+        label: 'Save',
+        cssClass: 'btn-primary',
+        action: function(dialogRef) {
+          var fruit = dialogRef.getModalBody().find('input').val();
+          if($.trim(fruit.toLowerCase()) !== 'banana') {
+            // create new string
+            dialogRef.close();
+          } else {
+            dialogRef.close();
+          }
+        }
+      }]
+    });
   });
 
   switchDisplay('left');
