@@ -15,10 +15,33 @@ class I18n_Mongo_Handler
     }
   }
 
+  public function findOne($community, $string_name)
+  {
+    $doc = $this->collection_list[$community]->findOne(array('string_name' => $string_name));
+    if (!$doc) {
+      return false;
+    }
+    return $doc;
+  }
+
+  public function insert($community, $string_name, $language = '', $message = '')
+  {
+    $doc = $this->findOne($community, $string_name);
+    if ($doc) {
+      return false;
+    }
+    $doc = $this->getDocument($string_name);
+    if ($language && $field = $this->CI->app->get_language_field($language)) {
+      $doc[$field] = $message;
+    }
+    $this->collection_list[$community]->insert($doc);
+    return $doc['created_at'];
+  }
+
   public function update($community, $string_name, $language, $message)
   {
-    $old_trans = $this->collection_list[$community]->findOne(array('string_name' => $string_name));
-    if (!$old_trans || $message == $old_trans['trans_'.$language]) {
+    $doc = $this->findOne($community, $string_name);
+    if (!$doc || $message == $doc['trans_'.$language]) {
       return false;
     }
     $field = $this->CI->app->get_language_field($language);
@@ -29,5 +52,20 @@ class I18n_Mongo_Handler
     ));
     $this->collection_list[$community]->update(array('string_name' => $string_name), $new_message);
     return $update_ts;
+  }
+
+  private function getDocument($string_name)
+  {
+    $doc = array(
+      'string_name' => $string_name,
+      'cat_id'      => 2,
+      'original'    => '',
+      'trans_de'    => '',
+      'trans_en'    => '',
+      'trans_es'    => '',
+      'created_at'  => time(),
+      'updated_at'  => time(),
+    );
+    return $doc;
   }
 }

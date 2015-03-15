@@ -235,6 +235,7 @@ $(document).ready(function() {
     var text_dom = $(this).parents('.message-body').find('p[data="' + community + '_' + language + '"]');
 
     // do not show 'string is empty' sentence in textarea
+    textarea.val('');
     if (!text_dom.attr('data-empty')) {
       textarea.val(text_dom.text());
     }
@@ -272,6 +273,9 @@ $(document).ready(function() {
           p_box.html(result.message);
           if (result.message == '') {
             p_box.html('<span class="light-grey">STRING IS EMPTY</span>');
+            p_box.attr('data-empty', true);
+          } else {
+            p_box.removeAttr('data-empty');
           }
           if (result.update_ts) {
             update_ts.html(result.update_ts);
@@ -305,14 +309,7 @@ $(document).ready(function() {
   $('button[name="create"]').click(function() {
     BootstrapDialog.show({
       title: 'Create new string',
-      message: 'Input new string name: <input type="text" class="form-control">',
-      // onhide: function(dialogRef){
-      //   var fruit = dialogRef.getModalBody().find('input').val();
-      //   if($.trim(fruit.toLowerCase()) !== 'banana') {
-      //     alert('Need banana!');
-      //     return false;
-      //   }
-      // },
+      message: '<p>Input new string name: </p><p><input type="text" class="form-control"></p><p id="create_message" class="text-danger" style="display:none;"></p>',
       buttons: [{
         label: 'Cancel',
         action: function(dialogRef) {
@@ -323,12 +320,29 @@ $(document).ready(function() {
         label: 'Save',
         cssClass: 'btn-primary',
         action: function(dialogRef) {
-          var fruit = dialogRef.getModalBody().find('input').val();
-          if($.trim(fruit.toLowerCase()) !== 'banana') {
-            // create new string
-            dialogRef.close();
+          var string_name = dialogRef.getModalBody().find('input').val();
+          if($.trim(string_name) != '') {
+            var data = {
+              'stn' : string_name
+            }
+            $.ajax({
+              type: "POST",
+              url: '/messages/create',
+              data: data,
+              success: function(result) {
+                if (result.r == 'ok') {
+                  dialogRef.close();
+                  // make redirection
+                  window.location = '/messages/search?search=string_name&keyword=' + string_name;
+                } else {
+                  return false;
+                }
+              },
+              dataType: 'json'
+            });
           } else {
-            dialogRef.close();
+            $('#create_message').html('String name is empty').show();
+            return false;
           }
         }
       }]

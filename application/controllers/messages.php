@@ -81,11 +81,39 @@ class Messages extends CI_Controller
     $this->template->load('default', 'messages/index', $data);
   }
 
+  public function create()
+  {
+    $this->getParams();
+    $communities = $this->app->get_communities();
+    foreach ($communities as $community => $community_name) {
+      $doc = $this->i18n_mongo_handler->findOne($community, $this->stn);
+      // string name exists
+      if ($doc) {
+        echo json_encode(array('r' => 'ko', 'message' => 'String name exists'));
+        return;
+      }
+    }
+
+    foreach ($communities as $community => $community_name) {
+      $update_ts = $this->i18n_mongo_handler->insert($community, $this->stn);
+    }
+    if ($update_ts) {
+      echo json_encode(array('r' => 'ok', 'message' => '', 'update_ts' => date('Y-m-d H:i:s', $update_ts)));
+    } else {
+      echo json_encode(array('r' => 'ko', 'message' => 'Create failed'));
+    }
+  }
+
   public function save()
   {
     $this->getParams();
-    // TODO insert or update
-    $update_ts = $this->i18n_mongo_handler->update($this->comm, $this->stn, $this->lang, $this->message);
+    // insert or update
+    $doc = $this->i18n_mongo_handler->findOne($this->comm, $this->stn);
+    if ($doc) {
+      $update_ts = $this->i18n_mongo_handler->update($this->comm, $this->stn, $this->lang, $this->message);
+    } else {
+      $update_ts = $this->i18n_mongo_handler->insert($this->comm, $this->stn, $this->lang, $this->message);
+    }
     if ($update_ts) {
       echo json_encode(array('r' => 'ok', 'message' => htmlspecialchars($this->message), 'update_ts' => date('Y-m-d H:i:s', $update_ts)));
     } else {
