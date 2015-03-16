@@ -15,12 +15,12 @@
             </div>
           </div>
         </div>
-        <div class="col-lg-2">
+        <!-- <div class="col-lg-2">
           <label>&nbsp;</label>
           <div class="input-group">
               <button name="create" type="button" class="btn btn-primary message-create">Create</button>
           </div>
-        </div>
+        </div> -->
       </form>
     </div>
     <hr />
@@ -42,7 +42,7 @@
           </select>
         </div>
         <!-- <button name="switch-btn-left" type="button" class="btn btn-primary">Go</button> -->
-        <!-- <button name="create-btn-left" type="button" class="btn btn-danger message-create">Create</button> -->
+        <button name="create" type="button" class="btn btn-primary message-create">Create</button>
         <div style="clear: both;"></div>
       </div>
       <div class="col-lg-6">
@@ -61,7 +61,7 @@
           </select>
         </div>
         <!-- <button name="switch-btn-right" type="button" class="btn btn-primary">Go</button> -->
-        <!-- <button name="create-btn-right" type="button" class="btn btn-danger message-create">Create</button> -->
+        <button name="create" type="button" class="btn btn-primary message-create">Create</button>
         <div style="clear: both;"></div>
       </div>
       </form>
@@ -310,18 +310,27 @@ $(document).ready(function() {
     BootstrapDialog.show({
       title: 'Create new string',
       message: '<p>Input new string name: </p><p><input type="text" class="form-control"></p><p id="create_message" class="text-danger" style="display:none;"></p>',
+      onshown: function(dialogRef) {
+        dialogRef.getModalBody().find('input').focus();
+      },
       buttons: [{
         label: 'Cancel',
+        hotkey: 27,
         action: function(dialogRef) {
           dialogRef.close();
         }
       },
       {
         label: 'Save',
+        hotkey: 13,
         cssClass: 'btn-primary',
         action: function(dialogRef) {
           var string_name = dialogRef.getModalBody().find('input').val();
           if($.trim(string_name) != '') {
+            if (/^[A-Za-z0-9%_-]+$/.test(string_name) == false) {
+              $('#create_message').html('Invalid character (Allowed characters: alphabets, numbers, "%", "_", "-")').show();
+              return false;
+            }
             var data = {
               'stn' : string_name
             }
@@ -335,6 +344,7 @@ $(document).ready(function() {
                   // make redirection
                   window.location = '/messages/search?search=string_name&keyword=' + string_name;
                 } else {
+                  $('#create_message').html(result.message).show();
                   return false;
                 }
               },

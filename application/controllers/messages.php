@@ -145,22 +145,22 @@ class Messages extends CI_Controller
       case 'string_name':
         $regex  = array('$regex' => new MongoRegex("/".$keyword."/"));
         $g_docs = $this->tnc_mongo->db->$gays_collection->find(array('string_name' => $regex));
-        $g_docs->sort(array('updated_at' => 1));
+        $g_docs->sort(array('updated_at' => -1));
         $p_docs = $this->tnc_mongo->db->$poppen_collection->find(array('string_name' => $regex));
-        $p_docs->sort(array('updated_at' => 1));
+        $p_docs->sort(array('updated_at' => -1));
         break;
       case 'poppen_en':
         $regex  = array('$regex' => new MongoRegex("/^".$keyword."$/"));
         $g_docs = $this->tnc_mongo->db->$gays_collection->find(array('trans_en' => $regex));
-        $g_docs->sort(array('updated_at' => 1));
+        $g_docs->sort(array('updated_at' => -1));
         $p_docs = $this->tnc_mongo->db->$poppen_collection->find(array('trans_en' => $regex));
-        $p_docs->sort(array('updated_at' => 1));
+        $p_docs->sort(array('updated_at' => -1));
         break;
       default:
         $g_docs = $this->tnc_mongo->db->$gays_collection->find();
-        $g_docs->sort(array('updated_at' => 1));
+        $g_docs->sort(array('updated_at' => -1));
         $p_docs = $this->tnc_mongo->db->$poppen_collection->find();
-        $p_docs->sort(array('updated_at' => 1));
+        $p_docs->sort(array('updated_at' => -1));
         break;
     }
 
