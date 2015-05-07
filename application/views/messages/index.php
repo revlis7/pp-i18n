@@ -199,6 +199,27 @@ $(document).ready(function() {
     $.cookie("language_" + side, language, { expires : <?= $this->app->get('cookie_expiration'); ?> , path : '/'});
   }
 
+  var editMessage = function(e) {
+    $(e.target).parents('.message-body').find('p.message-text').hide();
+
+    var side = $(e.target).parents('.message-body').attr('side');
+    var community = getCommunity(side);
+    var language  = getLanguage(side);
+
+    var textarea = $(e.target).parents('.message-body').find('textarea');
+    var text_dom = $(e.target).parents('.message-body').find('p[data="' + community + '_' + language + '"]');
+
+    // do not show 'string is empty' sentence in textarea
+    textarea.val('');
+    if (!text_dom.attr('data-empty')) {
+      textarea.val(text_dom.text());
+    }
+    textarea.show();
+
+    $(e.target).parents('.message-body').find('div.action-base').hide();
+    $(e.target).parents('.message-body').find('div.action-edit').show();
+  }
+
   $('button[name="search"]').click(redirectSearchPage);
 
   $('select[name="community-sel-left"]').change(function() {
@@ -224,26 +245,9 @@ $(document).ready(function() {
     }
   });
 
-  $('.btn-edit').click(function() {
-    $(this).parents('.message-body').find('p.message-text').hide();
+  $('.message-text').dblclick(editMessage);
 
-    var side = $(this).parents('.message-body').attr('side');
-    var community = getCommunity(side);
-    var language  = getLanguage(side);
-
-    var textarea = $(this).parents('.message-body').find('textarea');
-    var text_dom = $(this).parents('.message-body').find('p[data="' + community + '_' + language + '"]');
-
-    // do not show 'string is empty' sentence in textarea
-    textarea.val('');
-    if (!text_dom.attr('data-empty')) {
-      textarea.val(text_dom.text());
-    }
-    textarea.show();
-
-    $(this).parents('.message-body').find('div.action-base').hide();
-    $(this).parents('.message-body').find('div.action-edit').show();
-  });
+  $('.btn-edit').click(editMessage);
 
   $('.btn-save').click(function() {
     var side = $(this).parents('.message-body').attr('side');
