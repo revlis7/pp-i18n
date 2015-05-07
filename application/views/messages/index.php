@@ -168,7 +168,8 @@ $(document).ready(function() {
       search  : $('select[name="search"] option:selected').val(),
       keyword : $('input[name="keyword"]').val()
     };
-    var uri = '/messages/search?' + $.param(params);
+    // var uri = '/messages/search?' + $.param(params);
+    var uri = '/search/' + params.search + '/keyword/' + encodeURIComponent(params.keyword);
     window.location = uri;
   };
 

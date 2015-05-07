@@ -38,15 +38,15 @@ class Messages extends CI_Controller
     $this->template->load('default', 'messages/index', $data);
   }
 
-  public function search()
+  public function search($search = 'string_name', $keyword = '', $page = 1)
   {
     $this->load->helper(array('form', 'url'));
 
     // $this->output->enable_profiler(true);
 
-    $search  = $this->input->get('search') ? $this->input->get('search') : 'string_name';
-    $keyword = $this->input->get('keyword') ? $this->input->get('keyword') : '';
-    $page    = $this->input->get('page') ? $this->input->get('page') : 1;
+    // $search  = $this->input->get('search') ? $this->input->get('search') : 'string_name';
+    // $keyword = $this->input->get('keyword') ? $this->input->get('keyword') : '';
+    // $page    = $this->input->get('page') ? $this->input->get('page') : 1;
 
     $keyword = html_entity_decode(rawurldecode($keyword));
     if (empty($keyword)) {
