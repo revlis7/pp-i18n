@@ -9,7 +9,7 @@
         <div class="col-lg-3">
           <label>Keyword:</label>
           <div class="input-group">
-            <input type="text" name="keyword" class="form-control" value="<?= $keyword; ?>">
+            <input type="text" name="keyword" class="form-control" value="<?= htmlentities($keyword); ?>">
             <div class="input-group-btn">
               <button name="search" type="button" class="btn btn-default"><span class="glyphicon glyphicon-search"></span></button>
             </div>
@@ -314,7 +314,7 @@ $(document).ready(function() {
   $('button[name="create"]').click(function() {
     BootstrapDialog.show({
       title: 'Create new string',
-      message: '<p>Input new string name: </p><p><input type="text" class="form-control"></p><p id="create_message" class="text-danger" style="display:none;"></p>',
+      message: '<p>Input new string name: (use comma to create multiple strings)</p><p><input type="text" class="form-control"></p><p id="create_message" class="text-danger" style="display:none;"></p>',
       onshown: function(dialogRef) {
         dialogRef.getModalBody().find('input').focus();
       },
@@ -332,7 +332,7 @@ $(document).ready(function() {
         action: function(dialogRef) {
           var string_name = dialogRef.getModalBody().find('input').val();
           if($.trim(string_name) != '') {
-            if (/^[A-Za-z0-9%_-]+$/.test(string_name) == false) {
+            if (/^[A-Za-z0-9,%_-]+$/.test(string_name) == false) {
               $('#create_message').html('Invalid character (Allowed characters: alphabets, numbers, "%", "_", "-")').show();
               return false;
             }
@@ -347,7 +347,7 @@ $(document).ready(function() {
                 if (result.r == 'ok') {
                   dialogRef.close();
                   // make redirection
-                  window.location = '/messages/search?search=string_name&keyword=' + string_name;
+                  window.location = '/search/string_name/keyword/' + result.keyword;
                 } else {
                   $('#create_message').html(result.message).show();
                   return false;

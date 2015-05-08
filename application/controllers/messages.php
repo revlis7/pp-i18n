@@ -84,21 +84,37 @@ class Messages extends CI_Controller
   public function create()
   {
     $this->getParams();
+    $tmp = explode(',', $this->stn);
+    $string_name_list = array();
+    foreach ($tmp as $string_name) {
+      $string_name = trim($string_name);
+      if (!empty($string_name) && preg_match('/^[A-Za-z0-9,%_-]+$/', $string_name)) {
+        $string_name_list[] = $string_name;
+      }
+    }
+    if (empty($string_name_list)) {
+      echo json_encode(array('r' => 'ko', 'message' => 'Invalid string name'));
+      return;
+    }
     $communities = $this->app->get_communities();
     foreach ($communities as $community => $community_name) {
-      $doc = $this->i18n_mongo_handler->findOne($community, $this->stn);
-      // string name exists
-      if ($doc) {
-        echo json_encode(array('r' => 'ko', 'message' => 'String name exists'));
-        return;
+      foreach ($string_name_list as $string_name) {
+        $doc = $this->i18n_mongo_handler->findOne($community, $string_name);
+        // string name exists
+        if ($doc) {
+          echo json_encode(array('r' => 'ko', 'message' => 'String name: \''.$string_name.'\' exists'));
+          return;
+        }
       }
     }
 
     foreach ($communities as $community => $community_name) {
-      $update_ts = $this->i18n_mongo_handler->insert($community, $this->stn);
+      foreach ($string_name_list as $string_name) {
+        $update_ts = $this->i18n_mongo_handler->insert($community, $string_name);
+      }
     }
     if ($update_ts) {
-      echo json_encode(array('r' => 'ok', 'message' => '', 'update_ts' => date('Y-m-d H:i:s', $update_ts)));
+      echo json_encode(array('r' => 'ok', 'message' => '', 'update_ts' => date('Y-m-d H:i:s', $update_ts), 'keyword' => '^'.implode('|', $string_name_list).'$'));
     } else {
       echo json_encode(array('r' => 'ko', 'message' => 'Create failed'));
     }
@@ -149,11 +165,19 @@ class Messages extends CI_Controller
         $p_docs = $this->tnc_mongo->db->$poppen_collection->find(array('string_name' => $regex));
         $p_docs->sort(array('updated_at' => -1));
         break;
-      case 'poppen_en':
-        $regex  = array('$regex' => new MongoRegex("/^".$keyword."$/"));
-        $g_docs = $this->tnc_mongo->db->$gays_collection->find(array('trans_en' => $regex));
+      case 'translation':
+        $regex  = array('$regex' => new MongoRegex("/".$keyword."/"));
+        $g_docs = $this->tnc_mongo->db->$gays_collection->find(array('$or' => array(
+          array('trans_en' => $regex),
+          array('trans_de' => $regex),
+          array('trans_es' => $regex),
+        )));
         $g_docs->sort(array('updated_at' => -1));
-        $p_docs = $this->tnc_mongo->db->$poppen_collection->find(array('trans_en' => $regex));
+        $p_docs = $this->tnc_mongo->db->$poppen_collection->find(array('$or' => array(
+          array('trans_en' => $regex),
+          array('trans_de' => $regex),
+          array('trans_es' => $regex),
+        )));
         $p_docs->sort(array('updated_at' => -1));
         break;
       default:
