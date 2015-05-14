@@ -15,6 +15,11 @@
             </div>
           </div>
         </div>
+        <div class="col-lg-2">
+          <div class="top-blank">
+            <button class="btn btn-primary" type="button" name="export"><span class="glyphicon glyphicon-download-alt"></span> Export</button>
+          </div>
+        </div>
         <!-- <div class="col-lg-2">
           <label>&nbsp;</label>
           <div class="input-group">
@@ -220,6 +225,19 @@ $(document).ready(function() {
     $(e.target).parents('.message-body').find('div.action-base').hide();
     $(e.target).parents('.message-body').find('div.action-edit').show();
   }
+
+  $('button[name="export"]').click(function() {
+    var options = {
+      left_community  : getCommunity('left'),
+      left_language   : getLanguage('left'),
+      right_community : getCommunity('right'),
+      right_language  : getLanguage('right'),
+      search  : $('select[name="search"] option:selected').val(),
+      keyword : $('input[name="keyword"]').val()
+    };
+    console.log(options);
+    window.location = '/messages/export?' + $.param(options);
+  });
 
   $('button[name="search"]').click(redirectSearchPage);
 

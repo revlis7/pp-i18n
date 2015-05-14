@@ -218,4 +218,38 @@ class Messages extends CI_Controller
 
     return $messages;
   }
+
+  public function export()
+  {
+    $left_language  = $this->input->get('left_language');
+    $left_community = $this->input->get('left_community');
+    $right_language  = $this->input->get('right_language');
+    $right_community = $this->input->get('right_community');
+
+    $search  = $this->input->get('search');
+    $keyword = $this->input->get('keyword');
+
+    $keyword = html_entity_decode(rawurldecode($keyword));
+    if (empty($keyword)) {
+      $search  = 'string_name';
+      $keyword = '';
+    }
+
+    $messages = $this->searchInMongo($search, $keyword);
+
+    $left_language_field = $this->app->get_language_field($left_language);
+    $right_language_field = $this->app->get_language_field($right_language);
+
+    $export_array = array();
+    if (!empty($messages)) {
+      foreach ($messages as $string_name => $message) {
+        $export_array[] = array($string_name, $message[$left_community][$left_language_field], $message[$right_community][$right_language_field]);
+      }
+    }
+
+    if (!empty($export_array)) {
+      $this->load->helper('csv');
+      array_to_csv($export_array, 'i18n-export-'.date('YmdHis').'.csv');
+    }
+  }
 }

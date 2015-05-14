@@ -21,6 +21,9 @@
   header .row {
     margin-top: 5px;
   }
+  .top-blank {
+    margin-top: 26px;
+  }
   .break {
     -ms-word-break: break-all;
     word-break: break-all;
