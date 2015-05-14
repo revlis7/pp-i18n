@@ -15,8 +15,8 @@
             </div>
           </div>
         </div>
-        <div class="col-lg-2">
-          <div class="top-blank">
+        <div class="col-lg-2" style="float:right;">
+          <div class="top-blank" style="float:right;">
             <button class="btn btn-primary" type="button" name="export"><span class="glyphicon glyphicon-download-alt"></span> Export</button>
           </div>
         </div>
