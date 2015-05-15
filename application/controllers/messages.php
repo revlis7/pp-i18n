@@ -268,7 +268,7 @@ class Messages extends CI_Controller
 
     // Redirect output to a client’s web browser (Excel5)
     header('Content-Type: application/vnd.ms-excel');
-    header('Content-Disposition: attachment;filename="'.$filename.'.xls"');
+    header('Content-Disposition: attachment;filename="'.$filename.'.xlsx"');
     header('Cache-Control: max-age=0');
     // If you're serving to IE 9, then the following may be needed
     header('Cache-Control: max-age=1');
@@ -279,7 +279,7 @@ class Messages extends CI_Controller
     header ('Cache-Control: cache, must-revalidate'); // HTTP/1.1
     header ('Pragma: public'); // HTTP/1.0
 
-    $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
+    $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel2007');
     $objWriter->save('php://output');
   }
 }
