@@ -52,7 +52,7 @@ $autoload['packages'] = array();
 |	$autoload['libraries'] = array('database', 'session', 'xmlrpc');
 */
 
-$autoload['libraries'] = array('Tnc_Mongo', 'Template', 'App', 'I18n_Mongo_Handler');
+$autoload['libraries'] = array('Tnc_Mongo', 'Template', 'App', 'I18n_Mongo_Handler', 'PHPExcel');
 
 
 /*

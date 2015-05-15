@@ -221,10 +221,14 @@ class Messages extends CI_Controller
 
   public function export()
   {
-    $left_language  = $this->input->get('left_language');
-    $left_community = $this->input->get('left_community');
+    $filename = 'i18n-export-'.date('YmdHis');
+    $left_language   = $this->input->get('left_language');
+    $left_community  = $this->input->get('left_community');
     $right_language  = $this->input->get('right_language');
     $right_community = $this->input->get('right_community');
+
+    $left_language_field  = $this->app->get_language_field($left_language);
+    $right_language_field = $this->app->get_language_field($right_language);
 
     $search  = $this->input->get('search');
     $keyword = $this->input->get('keyword');
@@ -235,21 +239,47 @@ class Messages extends CI_Controller
       $keyword = '';
     }
 
+    // query i18n strings
     $messages = $this->searchInMongo($search, $keyword);
 
-    $left_language_field = $this->app->get_language_field($left_language);
-    $right_language_field = $this->app->get_language_field($right_language);
+    // Create new PHPExcel object
+    $objPHPExcel = $this->phpexcel;
 
-    $export_array = array();
+    // Set document properties
+    $objPHPExcel->getProperties()->setCreator("The Netcircle")
+                                 ->setTitle($filename);
+
+    // Add some data
+    $objPHPExcel->setActiveSheetIndex(0)
+                ->setCellValue('A1', 'STRING_NAME')
+                ->setCellValue('B1', strtoupper($left_community.'_'.$left_language_field))
+                ->setCellValue('C1', strtoupper($right_community.'_'.$right_language_field));
+
     if (!empty($messages)) {
+      $row = 2;
       foreach ($messages as $string_name => $message) {
-        $export_array[] = array($string_name, $message[$left_community][$left_language_field], $message[$right_community][$right_language_field]);
+        $objPHPExcel->setActiveSheetIndex(0)
+                    ->setCellValue('A'.$row, $string_name)
+                    ->setCellValue('B'.$row, $message[$left_community][$left_language_field])
+                    ->setCellValue('C'.$row, $message[$right_community][$right_language_field]);
+        $row++;
       }
     }
 
-    if (!empty($export_array)) {
-      $this->load->helper('csv');
-      array_to_csv($export_array, 'i18n-export-'.date('YmdHis').'.csv');
-    }
+    // Redirect output to a client’s web browser (Excel5)
+    header('Content-Type: application/vnd.ms-excel');
+    header('Content-Disposition: attachment;filename="'.$filename.'.xls"');
+    header('Cache-Control: max-age=0');
+    // If you're serving to IE 9, then the following may be needed
+    header('Cache-Control: max-age=1');
+
+    // If you're serving to IE over SSL, then the following may be needed
+    header ('Expires: Mon, 26 Jul 1997 05:00:00 GMT'); // Date in the past
+    header ('Last-Modified: '.gmdate('D, d M Y H:i:s').' GMT'); // always modified
+    header ('Cache-Control: cache, must-revalidate'); // HTTP/1.1
+    header ('Pragma: public'); // HTTP/1.0
+
+    $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
+    $objWriter->save('php://output');
   }
 }
