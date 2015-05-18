@@ -3,11 +3,14 @@
 <head>
   <meta charset="utf-8">
   <title>The Netcircle - Translate Tool</title>
-  <link rel="stylesheet" href="/css/bootstrap.min.css">
-  <link rel="stylesheet" href="/css/bootstrap-theme.min.css">
-  <script src="/js/jquery-1.11.0.min.js"></script>
-  <script src="/js/jquery-migrate-1.2.1.min.js"></script>
-  <script src="/js/bootstrap.min.js"></script>
+  <link rel="stylesheet" type="text/css" href="/static/css/bootstrap.min.css">
+  <link rel="stylesheet" type="text/css" href="/static/css/bootstrap-theme.min.css">
+  <link rel="stylesheet" type="text/css" href="/static/css/bootstrap-dialog.css" />
+  <script src="/static/js/jquery-1.11.0.min.js"></script>
+  <script src="/static/js/jquery-migrate-1.2.1.min.js"></script>
+  <script src="/static/js/bootstrap.min.js"></script>
+  <script src="/static/js/jquery.cookie.js"></script>
+  <script src="/static/js/bootstrap-dialog.js"></script>
   <style>
   body {
     padding-top: 160px;
