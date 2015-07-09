@@ -26,6 +26,6 @@ class Tnc_Mongo extends Mongo
       parent::__construct();
     }
     $this->db = $this->$dbname;
-    $this->db->setSlaveOkay(true);
+    // $this->db->setSlaveOkay(true);
   }
 }

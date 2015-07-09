@@ -58,7 +58,7 @@ class Messages extends CI_Controller
     // pagination
     $this->config->load('pagination', true);
     $page_config = $this->config->item('pagination');
-    $page_config['base_url']    = '/search/'.$search.'/keyword/'.$keyword.'/page/';
+    $page_config['base_url']    = '/search/'.$search.'/keyword/'.rawurlencode($keyword).'/page/';
     $page_config['uri_segment'] = 6;
     $page_config['total_rows']  = count($messages);
 
@@ -84,6 +84,10 @@ class Messages extends CI_Controller
   public function create()
   {
     $this->getParams();
+    if (strlen($this->stn) >= 1024) {
+      echo json_encode(array('r' => 'ko', 'message' => 'The length of string name is too long (maximum: 1024 chars)'));
+      return;
+    }
     $tmp = explode(',', $this->stn);
     $string_name_list = array();
     foreach ($tmp as $string_name) {
@@ -100,24 +104,21 @@ class Messages extends CI_Controller
     foreach ($communities as $community => $community_name) {
       foreach ($string_name_list as $string_name) {
         $doc = $this->i18n_mongo_handler->findOne($community, $string_name);
-        // string name exists
+        // string name exists we skip it
         if ($doc) {
-          echo json_encode(array('r' => 'ko', 'message' => 'String name: \''.$string_name.'\' exists'));
-          return;
+          continue;
+        } else {
+          $this->i18n_mongo_handler->insert($community, $string_name);
         }
       }
     }
 
-    foreach ($communities as $community => $community_name) {
-      foreach ($string_name_list as $string_name) {
-        $update_ts = $this->i18n_mongo_handler->insert($community, $string_name);
-      }
+    $keyword = array();
+    foreach ($string_name_list as $string_name) {
+      $keyword[] = $string_name;
     }
-    if ($update_ts) {
-      echo json_encode(array('r' => 'ok', 'message' => '', 'update_ts' => date('Y-m-d H:i:s', $update_ts), 'keyword' => '^'.implode('|', $string_name_list).'$'));
-    } else {
-      echo json_encode(array('r' => 'ko', 'message' => 'Create failed'));
-    }
+
+    echo json_encode(array('r' => 'ok', 'message' => '', 'update_ts' => date('Y-m-d H:i:s'), 'keyword' => rawurlencode('^'.implode('|', $keyword).'$')));
   }
 
   public function save()
