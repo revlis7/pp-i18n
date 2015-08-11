@@ -350,7 +350,7 @@ $(document).ready(function() {
         action: function(dialogRef) {
           var string_name = dialogRef.getModalBody().find('input').val();
           if($.trim(string_name) != '') {
-            if (/^[A-Za-z0-9,%_-]+$/.test(string_name) == false) {
+            if (/^[A-Za-z0-9,%_-\s]+$/.test(string_name) == false) {
               $('#create_message').html('Invalid character (Allowed characters: alphabets, numbers, "%", "_", "-")').show();
               return false;
             }

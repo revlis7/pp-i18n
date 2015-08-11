@@ -92,7 +92,11 @@ class Messages extends CI_Controller
     $string_name_list = array();
     foreach ($tmp as $string_name) {
       $string_name = trim($string_name);
-      if (!empty($string_name) && preg_match('/^[A-Za-z0-9,%_-]+$/', $string_name)) {
+      if (!empty($string_name)) {
+        if (!preg_match('/^[A-Za-z0-9,%_-]+$/', $string_name)) {
+          echo json_encode(array('r' => 'ko', 'message' => 'Invalid character in: '.$string_name));
+          return;
+        }
         $string_name_list[] = $string_name;
       }
     }
