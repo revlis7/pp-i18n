@@ -332,7 +332,7 @@ $(document).ready(function() {
   $('button[name="create"]').click(function() {
     BootstrapDialog.show({
       title: 'Create new string',
-      message: '<p>Input new string name: (use comma to create multiple strings)</p><p><input type="text" class="form-control"></p><p id="create_message" class="text-danger" style="display:none;"></p>',
+      message: '<p>Input new string name: (use comma to create multiple strings, maximum: 1024 chars)</p><p><input type="text" class="form-control"></p><p id="create_message" class="text-danger" style="display:none;"></p>',
       onshown: function(dialogRef) {
         dialogRef.getModalBody().find('input').focus();
       },
