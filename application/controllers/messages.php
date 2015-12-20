@@ -287,4 +287,52 @@ class Messages extends CI_Controller
     $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel2007');
     $objWriter->save('php://output');
   }
+
+  public function import()
+  {
+    try {
+      $objPHPExcel = PHPExcel_IOFactory::load("formatted.xlsx");
+      $updated_count = 0;
+      $iterator = $objPHPExcel->getWorksheetIterator();
+      foreach ($objPHPExcel->getWorksheetIterator() as $i => $worksheet) {
+        if ($i != 0) continue;
+        foreach ($worksheet->getRowIterator() as $j => $row) {
+          $item = array();
+          foreach ($row->getCellIterator() as $k => $value) {
+            switch ($k) {
+              case 0:
+                $item['string_name'] = (string) $value;
+                break;
+              default:
+                $item['text'] = (string) $value;
+                break;
+            }
+          }
+          if (isset($item['string_name']) && !empty($item['string_name']) && isset($item['text']) && !empty($item['text'])) {
+            $doc = $this->i18n_mongo_handler->findOne('poppen', $item['string_name']);
+            if ($doc) {
+              $update_ts = $this->i18n_mongo_handler->update('poppen', $item['string_name'], 'en', $item['text']);
+              if ($update_ts) {
+                $updated_count++;
+              }
+            } else {
+              $communities = $this->app->get_communities();
+              foreach ($communities as $community => $community_name) {
+                $doc = $this->i18n_mongo_handler->findOne($community, $item['string_name']);
+                // string name exists we skip it
+                if ($doc) {
+                  continue;
+                } else {
+                  $this->i18n_mongo_handler->insert($community, $item['string_name']);
+                }
+              }
+            }
+          }
+        }
+      }
+      echo '<h1>Total: '.$updated_count.'</h1>';
+    } catch (Exception $e) {
+      echo $e->getMessage();
+    }
+  }
 }
