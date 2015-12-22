@@ -81,6 +81,30 @@ class Messages extends CI_Controller
     $this->template->load('default', 'messages/index', $data);
   }
 
+  public function search2($search = 'string_name', $keyword = '', $page = 1)
+  {
+    $this->load->helper(array('form', 'url'));
+
+    $keyword = html_entity_decode(rawurldecode($keyword));
+    if (empty($keyword)) {
+      redirect('/');
+    }
+
+    $messages = $this->searchInMongo($search, $keyword);
+
+    $data = array(
+      'communities'   => $this->app->get_communities(),
+      'languages'     => $this->app->get('language'),
+      'current_community_left'  => $this->app->get_current_community('left'),
+      'current_community_right' => $this->app->get_current_community('right'),
+      'current_language_left'   => $this->app->get_current_language('left'),
+      'current_language_right'  => $this->app->get_current_language('right'),
+      'search'        => $search,
+      'keyword'       => $keyword,
+      'page_messages' => $messages);
+    $this->template->load('default', 'messages/search', $data);
+  }
+
   public function create()
   {
     $this->getParams();
@@ -279,15 +303,35 @@ class Messages extends CI_Controller
     header('Cache-Control: max-age=1');
 
     // If you're serving to IE over SSL, then the following may be needed
-    header ('Expires: Mon, 26 Jul 1997 05:00:00 GMT'); // Date in the past
-    header ('Last-Modified: '.gmdate('D, d M Y H:i:s').' GMT'); // always modified
-    header ('Cache-Control: cache, must-revalidate'); // HTTP/1.1
-    header ('Pragma: public'); // HTTP/1.0
+    header('Expires: Mon, 26 Jul 1997 05:00:00 GMT'); // Date in the past
+    header('Last-Modified: '.gmdate('D, d M Y H:i:s').' GMT'); // always modified
+    header('Cache-Control: cache, must-revalidate'); // HTTP/1.1
+    header('Pragma: public'); // HTTP/1.0
 
     $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel2007');
     $objWriter->save('php://output');
   }
 
+  /*
+  public function replace()
+  {
+    $poppen_collection = $this->config->item('poppen_collection');
+    $docs = $this->tnc_mongo->db->$poppen_collection->find();
+    foreach ($docs as $key => $doc) {
+      $pattern = '/gay\.de/';
+      if (preg_match($pattern, $doc['trans_en'])) {
+        echo '<h1>'.$doc['string_name'].'</h1>';
+        $replacement = 'fuck.com';
+        // $doc['trans_en'] = preg_replace($pattern, $replacement, $doc['trans_en']);
+        // $update_ts = $this->i18n_mongo_handler->update('poppen', $doc['string_name'], 'en', $doc['trans_en']);
+        // echo '<h1>'.$update_ts.'</h1>';
+        echo '<pre>'.htmlentities($doc['trans_en']).'</pre>';
+      }
+    }
+  }
+  */
+
+  /*
   public function import()
   {
     try {
@@ -335,4 +379,5 @@ class Messages extends CI_Controller
       echo $e->getMessage();
     }
   }
+  */
 }
