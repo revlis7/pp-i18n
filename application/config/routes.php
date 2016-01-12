@@ -43,6 +43,9 @@ $route['messages/page/:num'] = "messages/index";
 $route['search/(:any)/keyword/(:any)/page/(:num)'] = "messages/search/$1/$2/$3";
 $route['search/(:any)/keyword/(:any)'] = "messages/search/$1/$2";
 $route['search/(:any)/keyword'] = "messages/index";
+$route['(:any)/(:any)/compare/(:any)/(:any)/search/(:any)/keyword/(:any)/page/(:num)'] = "messages/search2/$1/$2/$3/$4/$5/$6/$7";
+$route['(:any)/(:any)/compare/(:any)/(:any)/search/(:any)/keyword/(:any)'] = "messages/search2/$1/$2/$3/$4/$5/$6";
+$route['(:any)/(:any)/compare/(:any)/(:any)/search/(:any)/keyword'] = "messages/index";
 $route['default_controller'] = "messages/index";
 $route['404_override'] = '';
 

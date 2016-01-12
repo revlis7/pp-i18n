@@ -81,6 +81,49 @@ class Messages extends CI_Controller
     $this->template->load('default', 'messages/index', $data);
   }
 
+  public function search2($left_community, $left_language, $right_community, $right_language, $search = 'string_name', $keyword = '', $page = 1)
+  {
+    $this->load->helper(array('form', 'url'));
+
+    // $this->output->enable_profiler(true);
+
+    // $search  = $this->input->get('search') ? $this->input->get('search') : 'string_name';
+    // $keyword = $this->input->get('keyword') ? $this->input->get('keyword') : '';
+    // $page    = $this->input->get('page') ? $this->input->get('page') : 1;
+
+    $keyword = html_entity_decode(rawurldecode($keyword));
+    if (empty($keyword)) {
+      redirect('/');
+    }
+
+    $messages = $this->searchInMongo2($left_community, $left_language, $right_community, $right_language, $search, $keyword);
+
+    // pagination
+    $this->config->load('pagination', true);
+    $page_config = $this->config->item('pagination');
+    $page_config['base_url']    = '/search/'.$search.'/keyword/'.rawurlencode($keyword).'/page/';
+    $page_config['uri_segment'] = 6;
+    $page_config['total_rows']  = count($messages);
+
+    $this->load->library('pagination');
+    $this->pagination->initialize($page_config);
+    $page_links = $this->pagination->create_links();
+    $page_messages = array_slice($messages, ($this->pagination->cur_page - 1) * $page_config['per_page'], $page_config['per_page']);
+
+    $data = array(
+      'communities'   => $this->app->get_communities(),
+      'languages'     => $this->app->get('language'),
+      'current_community_left'  => $this->app->get_current_community('left'),
+      'current_community_right' => $this->app->get_current_community('right'),
+      'current_language_left'   => $this->app->get_current_language('left'),
+      'current_language_right'  => $this->app->get_current_language('right'),
+      'search'        => $search,
+      'keyword'       => $keyword,
+      'page_links'    => $page_links,
+      'page_messages' => $page_messages);
+    $this->template->load('default', 'messages/index', $data);
+  }
+
   public function create()
   {
     $this->getParams();
@@ -148,6 +191,80 @@ class Messages extends CI_Controller
     $this->lang = $this->input->post('lang');
     $this->stn  = $this->input->post('stn');
     $this->message = $this->input->post('message');
+  }
+
+  private function searchInMongo2($left_community, $left_language, $right_community, $right_language, $search = 'string_name', $keyword = '')
+  {
+    // benchmark start
+    $this->benchmark->mark('format_messages_start');
+
+    // get all messages from poppen & gays, and merge them together
+    $a_collection = $this->config->item($left_community.'_collection');
+    $b_collection = $this->config->item($right_community.'_collection');
+
+    $search  = !empty($search)  ? $search : 'string_name';
+    $keyword = !empty($keyword) ? preg_replace('/\*/', '.*', $keyword) : '.*';
+
+    switch($search) {
+      case 'string_name':
+        $regex  = array('$regex' => new MongoRegex("/".$keyword."/"));
+        $a_docs = $this->tnc_mongo->db->$a_collection->find(array('string_name' => $regex));
+        $a_docs->sort(array('updated_at' => -1));
+        if ($a_collection == $b_collection) {
+          $b_docs = $a_docs;
+        } else {
+          $b_docs = $this->tnc_mongo->db->$b_collection->find(array('string_name' => $regex));
+          $b_docs->sort(array('updated_at' => -1));
+        }
+        break;
+      // case 'translation':
+      //   $regex  = array('$regex' => new MongoRegex("/".$keyword."/"));
+      //   $g_docs = $this->tnc_mongo->db->$gays_collection->find(array('$or' => array(
+      //     array('trans_en' => $regex),
+      //     array('trans_de' => $regex),
+      //     array('trans_es' => $regex),
+      //   )));
+      //   $g_docs->sort(array('updated_at' => -1));
+      //   $p_docs = $this->tnc_mongo->db->$poppen_collection->find(array('$or' => array(
+      //     array('trans_en' => $regex),
+      //     array('trans_de' => $regex),
+      //     array('trans_es' => $regex),
+      //   )));
+      //   $p_docs->sort(array('updated_at' => -1));
+      //   break;
+      // default:
+      //   $g_docs = $this->tnc_mongo->db->$gays_collection->find();
+      //   $g_docs->sort(array('updated_at' => -1));
+      //   $p_docs = $this->tnc_mongo->db->$poppen_collection->find();
+      //   $p_docs->sort(array('updated_at' => -1));
+      //   break;
+    }
+
+    $messages = array();
+
+    foreach ($a_docs as $a_doc) {
+      $messages[$a_doc['string_name']] = array(
+        'a' => $a_doc,
+        'b' => null,
+      );
+    }
+
+    foreach ($b_docs as $b_doc) {
+      $string_name = $b_doc['string_name'];
+      if (isset($messages[$string_name])) {
+        $messages[$a_doc['string_name']]['b'] = $b_doc;
+      } else {
+        $messages[$a_doc['string_name']] = array(
+        'a' => null,
+        'b' => $b_doc,
+      );
+      }
+    }
+
+    // benchmark end
+    $this->benchmark->mark('format_messages_end');
+
+    return $messages;
   }
 
   private function searchInMongo($search = 'string_name', $keyword = '')
