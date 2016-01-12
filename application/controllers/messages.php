@@ -334,14 +334,17 @@ class Messages extends CI_Controller
   /*
   public function import()
   {
+    // disable it
+    exit;
     try {
       $objPHPExcel = PHPExcel_IOFactory::load("formatted.xlsx");
-      $updated_count = 0;
+      $updated_count = $total_count = $inserted_count = 0;
       $iterator = $objPHPExcel->getWorksheetIterator();
       foreach ($objPHPExcel->getWorksheetIterator() as $i => $worksheet) {
         if ($i != 0) continue;
         foreach ($worksheet->getRowIterator() as $j => $row) {
           $item = array();
+          $total_count++;
           foreach ($row->getCellIterator() as $k => $value) {
             switch ($k) {
               case 0:
@@ -353,9 +356,9 @@ class Messages extends CI_Controller
             }
           }
           if (isset($item['string_name']) && !empty($item['string_name']) && isset($item['text']) && !empty($item['text'])) {
-            $doc = $this->i18n_mongo_handler->findOne('poppen', $item['string_name']);
+            $doc = $this->i18n_mongo_handler->findOne('gays', $item['string_name']);
             if ($doc) {
-              $update_ts = $this->i18n_mongo_handler->update('poppen', $item['string_name'], 'en', $item['text']);
+              $update_ts = $this->i18n_mongo_handler->update('gays', $item['string_name'], 'en', $item['text']);
               if ($update_ts) {
                 $updated_count++;
               }
@@ -369,12 +372,15 @@ class Messages extends CI_Controller
                 } else {
                   $this->i18n_mongo_handler->insert($community, $item['string_name']);
                 }
+                $inserted_count++;
               }
             }
           }
         }
       }
-      echo '<h1>Total: '.$updated_count.'</h1>';
+      echo '<h1>Total: '.$total_count.'</h1>';
+      echo '<h1>Inserted: '.$inserted_count.'</h1>';
+      echo '<h1>Updated: '.$updated_count.'</h1>';
     } catch (Exception $e) {
       echo $e->getMessage();
     }
