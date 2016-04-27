@@ -185,6 +185,24 @@ class Messages extends CI_Controller
         )));
         $p_docs->sort(array('updated_at' => -1));
         break;
+      case 'empty':
+        $g_docs = $this->tnc_mongo->db->$poppen_collection->find([
+          'trans_de' => [
+            '$exists' => true,
+            '$ne'     => '',
+          ],
+          'trans_en' => ''
+        ]);
+        $g_docs->sort(array('updated_at' => -1));
+        $p_docs = $this->tnc_mongo->db->$poppen_collection->find([
+          'trans_de' => [
+            '$exists' => true,
+            '$ne'     => '',
+          ],
+          'trans_en' => ''
+        ]);
+        $p_docs->sort(array('updated_at' => -1));
+        break;
       default:
         $g_docs = $this->tnc_mongo->db->$gays_collection->find();
         $g_docs->sort(array('updated_at' => -1));
@@ -306,15 +324,15 @@ class Messages extends CI_Controller
               case 0:
                 $item['string_name'] = (string) $value;
                 break;
-              default:
+              case 2:
                 $item['text'] = (string) $value;
                 break;
             }
           }
           if (isset($item['string_name']) && !empty($item['string_name']) && isset($item['text']) && !empty($item['text'])) {
-            $doc = $this->i18n_mongo_handler->findOne('gays', $item['string_name']);
+            $doc = $this->i18n_mongo_handler->findOne('poppen', $item['string_name']);
             if ($doc) {
-              $update_ts = $this->i18n_mongo_handler->update('gays', $item['string_name'], 'en', $item['text']);
+              $update_ts = $this->i18n_mongo_handler->update('poppen', $item['string_name'], 'en', $item['text']);
               if ($update_ts) {
                 $updated_count++;
               }
