@@ -306,6 +306,56 @@ class Messages extends CI_Controller
     $objWriter->save('php://output');
   }
 
+  public function duplicate()
+  {
+    exit;
+    $duplicateMap = array(
+      'N_TITLE_REFUND_POINTS_FOR_STATUS_DENYED' => 'N_TITLE_REFUND_PERSONAL_PROMOTION_POINTS_FOR_STATUS_DENYED',
+      'N_BODY_REFUND_POINTS_FOR_STATUS_DENYED_%nick_name%_%event_name%_%search_gender%_%target_plz%_%age_min%_%age_max%_%end_date%_%delivered_impressions%_%delivered_clicks%_%delivered_rate%_%refunded_points%' => 'N_BODY_REFUND_PERSONAL_PROMOTION_POINTS_FOR_STATUS_DENYED_%nick_name%_%name%_%search_gender%_%target_plz%_%age_min%_%age_max%_%end_date%_%delivered_impressions%_%delivered_clicks%_%delivered_rate%_%refunded_points%',
+      'M_TITLE_REFUND_POINTS_FOR_STATUS_DENYED' => 'M_TITLE_REFUND_PERSONAL_PROMOTION_POINTS_FOR_STATUS_DENYED',
+      'M_BODY_REFUND_POINTS_FOR_STATUS_DENYED_%nick_name%_%event_name%_%search_gender%_%target_plz%_%age_min%_%age_max%_%end_date%_%delivered_impressions%_%delivered_clicks%_%delivered_rate%_%refunded_points%' => 'M_BODY_REFUND_PERSONAL_PROMOTION_POINTS_FOR_STATUS_DENYED_%nick_name%_%name%_%search_gender%_%target_plz%_%age_min%_%age_max%_%end_date%_%delivered_impressions%_%delivered_clicks%_%delivered_rate%_%refunded_points%',
+      'N_TITLE_REFUND_POINTS_FOR_STATUS_CLOSED' => 'N_TITLE_REFUND_PERSONAL_PROMOTION_POINTS_FOR_STATUS_CLOSED',
+      'N_BODY_REFUND_POINTS_FOR_STATUS_CLOSED_%nick_name%_%event_name%_%search_gender%_%target_plz%_%age_min%_%age_max%_%end_date%_%delivered_impressions%_%delivered_clicks%_%delivered_rate%_%refunded_points%' => 'N_BODY_REFUND_PERSONAL_PROMOTION_POINTS_FOR_STATUS_CLOSED_%nick_name%_%name%_%search_gender%_%target_plz%_%age_min%_%age_max%_%end_date%_%delivered_impressions%_%delivered_clicks%_%delivered_rate%_%refunded_points%',
+      'M_TITLE_REFUND_POINTS_FOR_STATUS_CLOSED' => 'M_TITLE_REFUND_PERSONAL_PROMOTION_POINTS_FOR_STATUS_CLOSED',
+      'M_BODY_REFUND_POINTS_FOR_STATUS_CLOSED_%nick_name%_%event_name%_%search_gender%_%target_plz%_%age_min%_%age_max%_%end_date%_%delivered_impressions%_%delivered_clicks%_%delivered_rate%_%refunded_points%' => 'M_BODY_REFUND_PERSONAL_PROMOTION_POINTS_FOR_STATUS_CLOSED_%nick_name%_%name%_%search_gender%_%target_plz%_%age_min%_%age_max%_%end_date%_%delivered_impressions%_%delivered_clicks%_%delivered_rate%_%refunded_points%',
+      'N_TITLE_REFUND_POINTS_FOR_STATUS_ENDED' => 'N_TITLE_REFUND_PERSONAL_PROMOTION_POINTS_FOR_STATUS_ENDED',
+      'N_BODY_REFUND_POINTS_FOR_STATUS_ENDED_%nick_name%_%event_name%_%search_gender%_%target_plz%_%age_min%_%age_max%_%end_date%_%delivered_impressions%_%delivered_clicks%_%delivered_rate%_%refunded_points%' => 'N_BODY_REFUND_PERSONAL_PROMOTION_POINTS_FOR_STATUS_ENDED_%nick_name%_%name%_%search_gender%_%target_plz%_%age_min%_%age_max%_%end_date%_%delivered_impressions%_%delivered_clicks%_%delivered_rate%_%refunded_points%',
+      'M_TITLE_REFUND_POINTS_FOR_STATUS_ENDED' => 'M_TITLE_REFUND_PERSONAL_PROMOTION_POINTS_FOR_STATUS_ENDED',
+      'M_BODY_REFUND_POINTS_FOR_STATUS_ENDED_%nick_name%_%event_name%_%search_gender%_%target_plz%_%age_min%_%age_max%_%end_date%_%delivered_impressions%_%delivered_clicks%_%delivered_rate%_%refunded_points%' => 'M_BODY_REFUND_PERSONAL_PROMOTION_POINTS_FOR_STATUS_ENDED_%nick_name%_%name%_%search_gender%_%target_plz%_%age_min%_%age_max%_%end_date%_%delivered_impressions%_%delivered_clicks%_%delivered_rate%_%refunded_points%',
+      'N_TITLE_REFUND_POINTS_FOR_STATUS_DELETED' => 'N_TITLE_REFUND_PERSONAL_PROMOTION_POINTS_FOR_STATUS_DELETED',
+      'N_BODY_REFUND_POINTS_FOR_STATUS_DELETED_%nick_name%_%event_name%_%search_gender%_%target_plz%_%age_min%_%age_max%_%end_date%_%delivered_impressions%_%delivered_clicks%_%delivered_rate%_%refunded_points%' => 'N_BODY_REFUND_PERSONAL_PROMOTION_POINTS_FOR_STATUS_DELETED_%nick_name%_%name%_%search_gender%_%target_plz%_%age_min%_%age_max%_%end_date%_%delivered_impressions%_%delivered_clicks%_%delivered_rate%_%refunded_points%',
+      'M_TITLE_REFUND_POINTS_FOR_STATUS_DELETED' => 'M_TITLE_REFUND_PERSONAL_PROMOTION_POINTS_FOR_STATUS_DELETED',
+      'M_BODY_REFUND_POINTS_FOR_STATUS_DELETED_%nick_name%_%event_name%_%search_gender%_%target_plz%_%age_min%_%age_max%_%end_date%_%delivered_impressions%_%delivered_clicks%_%delivered_rate%_%refunded_points%' => 'M_BODY_REFUND_PERSONAL_PROMOTION_POINTS_FOR_STATUS_DELETED_%nick_name%_%name%_%search_gender%_%target_plz%_%age_min%_%age_max%_%end_date%_%delivered_impressions%_%delivered_clicks%_%delivered_rate%_%refunded_points%',
+      'N_TITLE_FOR_FINISHED_EVENT_PROMOTION_CAMPAIGN' => 'N_TITLE_FOR_FINISHED_PERSONAL_PROMOTION_CAMPAIGN',
+      'N_BODY_FOR_FINISHED_EVENT_PROMOTION_CAMPAIGN_%event_name%_%search_gender%_%target_plz%_%age_min%_%age_max%_%end_date%_%delivered_impressions%_%delivered_clicks%' => 'N_BODY_FOR_FINISHED_PERSONAL_PROMOTION_CAMPAIGN_%name%_%search_gender%_%target_plz%_%age_min%_%age_max%_%end_date%_%delivered_impressions%_%delivered_clicks%',
+      'M_TITLE_FOR_FINISHED_EVENT_PROMOTION_CAMPAIGN' => 'M_TITLE_FOR_FINISHED_PERSONAL_PROMOTION_CAMPAIGN',
+      'M_BODY_FOR_FINISHED_EVENT_PROMOTION_CAMPAIGN_%event_name%_%search_gender%_%target_plz%_%age_min%_%age_max%_%end_date%_%delivered_impressions%_%delivered_clicks%' => 'M_BODY_FOR_FINISHED_PERSONAL_PROMOTION_CAMPAIGN_%name%_%search_gender%_%target_plz%_%age_min%_%age_max%_%end_date%_%delivered_impressions%_%delivered_clicks%',
+    );
+
+    foreach ($duplicateMap as $src => $dsc) {
+      if ($this->i18n_mongo_handler->findOne('poppen', $dsc)) {
+        continue;
+      }
+      $doc = $this->i18n_mongo_handler->findOne('poppen', $src);
+      if (!empty($doc)) {
+        $newDoc = array();
+        foreach ($doc as $key => $value) {
+          if ($key != '_id') {
+            if ($key == 'string_name') {
+              $newDoc[$key] = $dsc;
+            } else {
+              $newDoc[$key] = $value;
+            }
+          }
+        }
+        $communities = $this->app->get_communities();
+        foreach ($communities as $community => $community_name) {
+          $this->i18n_mongo_handler->collection_list[$community]->insert($newDoc);
+        }
+      }
+    }
+  }
+
   public function import()
   {
     // disable it
