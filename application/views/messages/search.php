@@ -146,7 +146,7 @@
             <span data="<?= $community; ?>" class="message-hint" style="display:none;">Last Update: <span class="message-hint-ts"><?= date('Y-m-d H:i:s', $message[$community]['updated_at']); ?></span></span>
           <?php endforeach; ?>
           <div class="action-base">
-            <span class="action-link">Delete</span>
+            <span class="action-link"><a class="btn-delete" href="javascript:void(0);">Delete</a></span>
             <span class="action-link"><a class="btn-edit" href="javascript:void(0);">Edit</a></span>
             <span class="action-link">Preview</span>
           </div>
