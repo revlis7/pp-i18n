@@ -412,10 +412,8 @@ class Messages extends CI_Controller
   /*
   public function import()
   {
-    // disable it
-    exit;
     try {
-      $objPHPExcel = PHPExcel_IOFactory::load("formatted.xlsx");
+      $objPHPExcel = PHPExcel_IOFactory::load("strings_for_beta_gays_20160630.xlsx");
       $updated_count = $total_count = $inserted_count = 0;
       $iterator = $objPHPExcel->getWorksheetIterator();
       foreach ($objPHPExcel->getWorksheetIterator() as $i => $worksheet) {
@@ -428,15 +426,23 @@ class Messages extends CI_Controller
               case 0:
                 $item['string_name'] = (string) $value;
                 break;
+              case 1:
+                $item['text_de'] = (string) $value;
+                break;
               case 2:
-                $item['text'] = (string) $value;
+                $item['text_en'] = (string) $value;
                 break;
             }
           }
-          if (isset($item['string_name']) && !empty($item['string_name']) && isset($item['text']) && !empty($item['text'])) {
-            $doc = $this->i18n_mongo_handler->findOne('poppen', $item['string_name']);
+          if (isset($item['string_name']) && !empty($item['string_name'])) {
+            $doc = $this->i18n_mongo_handler->findOne('gays', $item['string_name']);
             if ($doc) {
-              $update_ts = $this->i18n_mongo_handler->update('poppen', $item['string_name'], 'en', $item['text']);
+              if (!empty($item['text_de'])) {
+                $update_ts = $this->i18n_mongo_handler->update('gays', $item['string_name'], 'de', $item['text_de']);
+              }
+              if (!empty($item['text_en'])) {
+                $update_ts = $this->i18n_mongo_handler->update('gays', $item['string_name'], 'en', $item['text_en']);
+              }
               if ($update_ts) {
                 $updated_count++;
               }
