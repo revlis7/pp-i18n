@@ -106,7 +106,7 @@
             <span data="<?= $community; ?>" class="message-hint" style="display:none;">Last Update: <span class="message-hint-ts"><?= date('Y-m-d H:i:s', $message[$community]['updated_at']); ?></span></span>
           <?php endforeach; ?>
           <div class="action-base">
-            <span class="action-link">Delete</span>
+            <span class="action-link"><a class="btn-delete" href="javascript:void(0);">Delete</a></span>
             <span class="action-link"><a class="btn-edit" href="javascript:void(0);">Edit</a></span>
             <span class="action-link">Preview</span>
           </div>
@@ -309,6 +309,44 @@ $(document).ready(function() {
         }
       },
       dataType: 'json'
+    });
+  });
+
+  $('.btn-delete').click(function() {
+    var string_name = $(this).parents('.message-body').find('h4.message-name').html();
+    var row = $(this).parents('.row');
+    BootstrapDialog.show({
+      title: 'Delete string',
+      message: '<p>Will delete string: "' + string_name + '"</p>',
+      buttons: [{
+        label: 'Cancel',
+        hotkey: 27,
+        action: function(dialogRef) {
+          dialogRef.close();
+        }
+      },
+      {
+        label: 'Delete',
+        hotkey: 13,
+        cssClass: 'btn-danger',
+        action: function(dialogRef) {
+          var data = {
+            'stn' : string_name
+          }
+          $.ajax({
+            type: "POST",
+            url: '/messages/remove',
+            data: data,
+            success: function(result) {
+              if (result.r == 'ok') {
+                dialogRef.close();
+                row.slideUp();
+              }
+            },
+            dataType: 'json'
+          });
+        }
+      }]
     });
   });
 

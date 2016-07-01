@@ -54,6 +54,11 @@ class I18n_Mongo_Handler
     return $update_ts;
   }
 
+  public function remove($community, $string_name)
+  {
+    $result = $this->collection_list[$community]->remove(array('string_name' => $string_name));
+  }
+
   private function getDocument($string_name)
   {
     $doc = array(

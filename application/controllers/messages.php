@@ -174,6 +174,16 @@ class Messages extends CI_Controller
     $this->message = $this->input->post('message');
   }
 
+  public function remove()
+  {
+    $this->stn = $this->input->post('stn');
+    $communities = $this->app->get_communities();
+    foreach ($communities as $community => $community_name) {
+      $doc = $this->i18n_mongo_handler->remove($community, $this->stn);
+    }
+    echo json_encode(array('r' => 'ok'));
+  }
+
   private function searchInMongo($search = 'string_name', $keyword = '')
   {
     // benchmark start
