@@ -409,11 +409,10 @@ class Messages extends CI_Controller
   }
   */
 
-  /*
   public function import()
   {
     try {
-      $objPHPExcel = PHPExcel_IOFactory::load("strings_for_beta_gays_20160630.xlsx");
+      $objPHPExcel = PHPExcel_IOFactory::load("gayde_fix.xlsx");
       $updated_count = $total_count = $inserted_count = 0;
       $iterator = $objPHPExcel->getWorksheetIterator();
       foreach ($objPHPExcel->getWorksheetIterator() as $i => $worksheet) {
@@ -429,36 +428,37 @@ class Messages extends CI_Controller
               case 1:
                 $item['text_de'] = (string) $value;
                 break;
-              case 2:
-                $item['text_en'] = (string) $value;
-                break;
+              // case 2:
+              //   $item['text_en'] = (string) $value;
+              //   break;
             }
           }
           if (isset($item['string_name']) && !empty($item['string_name'])) {
             $doc = $this->i18n_mongo_handler->findOne('gays', $item['string_name']);
             if ($doc) {
-              if (!empty($item['text_de'])) {
+              // if (!empty($item['text_de'])) {
+              //   $update_ts = $this->i18n_mongo_handler->update('gays', $item['string_name'], 'de', $item['text_de']);
+              // }
+              if (!empty(trim($item['text_de']))) {
                 $update_ts = $this->i18n_mongo_handler->update('gays', $item['string_name'], 'de', $item['text_de']);
-              }
-              if (!empty($item['text_en'])) {
-                $update_ts = $this->i18n_mongo_handler->update('gays', $item['string_name'], 'en', $item['text_en']);
               }
               if ($update_ts) {
                 $updated_count++;
               }
-            } else {
-              $communities = $this->app->get_communities();
-              foreach ($communities as $community => $community_name) {
-                $doc = $this->i18n_mongo_handler->findOne($community, $item['string_name']);
-                // string name exists we skip it
-                if ($doc) {
-                  continue;
-                } else {
-                  $this->i18n_mongo_handler->insert($community, $item['string_name']);
-                }
-                $inserted_count++;
-              }
             }
+            // } else {
+            //   $communities = $this->app->get_communities();
+            //   foreach ($communities as $community => $community_name) {
+            //     $doc = $this->i18n_mongo_handler->findOne($community, $item['string_name']);
+            //     // string name exists we skip it
+            //     if ($doc) {
+            //       continue;
+            //     } else {
+            //       $this->i18n_mongo_handler->insert($community, $item['string_name']);
+            //     }
+            //     $inserted_count++;
+            //   }
+            // }
           }
         }
       }
@@ -469,5 +469,54 @@ class Messages extends CI_Controller
       echo $e->getMessage();
     }
   }
-  */
+
+  public function compare()
+  {
+    $language = 'de';
+
+    $this->load->helper(array('form'));
+
+    $l_collection = $this->config->item('poppen_collection');
+    $r_collection   = $this->config->item('gays_collection');
+
+    // $this->output->enable_profiler(true);
+
+    $l_docs = $this->tnc_mongo->db->$l_collection->find();
+    $l_docs->sort(array('updated_at' => -1));
+    $r_docs = $this->tnc_mongo->db->$r_collection->find();
+    $r_docs->sort(array('updated_at' => -1));
+
+    $messages = array();
+    foreach($l_docs as $l_doc) {
+      $messages[$l_doc['string_name']] = array(
+        'L' => $l_doc[$this->app->get_language_field($language)],
+        'L_TS' => $l_doc['updated_at'],
+        'R' => '',
+        'R_TS' => '',
+      );
+    }
+
+    foreach ($r_docs as $r_doc) {
+      // if (!isset($r_doc[$this->app->get_language_field($language)])) {
+      //   var_dump($r_doc);exit;
+      // }
+      if (isset($messages[$r_doc['string_name']])) {
+        if ($messages[$r_doc['string_name']]['L'] == $r_doc[$this->app->get_language_field($language)]) {
+          unset($messages[$r_doc['string_name']]);
+        } else {
+          $messages[$r_doc['string_name']]['R'] = $r_doc[$this->app->get_language_field($language)];
+          $messages[$r_doc['string_name']]['R_TS'] = $r_doc['updated_at'];
+        }
+      } else {
+        $messages[$r_doc['string_name']] = array(
+          'L' => '',
+          'L_TS' => '',
+          'R' => $r_doc[$this->app->get_language_field($language)],
+          'R_TS' => $r_doc['updated_at'],
+        );
+      }
+    }
+
+    $this->template->load('default', 'messages/compare', array('page_messages' => $messages));
+  }
 }
